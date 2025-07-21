@@ -41,7 +41,7 @@ const IdCardList = () => {
     },
     pageStyle: `@media print {
       @page {
-        size: 7cm 4.4cm;
+        size: 7cm 4.22cm;
         margin: 0;
       }
     }`

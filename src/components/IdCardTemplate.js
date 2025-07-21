@@ -246,7 +246,7 @@ export default function IdCardTemplate({student}) {
         width: '400px',
         height: '240px',
          border: '1px solid black',
-         top: '250px',
+         top: '240px',
         left: '0px'
        }} data-position></div>
 
