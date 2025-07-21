@@ -4,4 +4,4 @@ services:
     build: .
     ports:
       - "12000:80"
-    container_name: id-card-generator 
+    container_name: print-id-cards
