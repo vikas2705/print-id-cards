@@ -1,25 +1,67 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import Papa from 'papaparse';
 import './App.css';
+import IdCard from './components/IdCard';
+import IdCardList from './components/IdCardList';
 
 function App() {
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    loadStudentData();
+  }, []);
+
+  const loadStudentData = () => {
+    fetch('/sample-data.csv')
+      .then(response => response.text())
+      .then(csv => {
+        Papa.parse(csv, {
+          header: true,
+          complete: (results) => {
+            setStudents(results.data);
+            setLoading(false);
+          },
+          error: (error) => {
+            setError('Error parsing CSV file');
+            setLoading(false);
+          }
+        });
+      })
+      .catch(error => {
+        setError('Error loading CSV file');
+        setLoading(false);
+      });
+  };
+
+  if (loading) {
+    return (
+      <div className="App">
+        <div className="loading">Loading student data...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="App">
+        <div className="error">{error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Student ID Card Generator</h1>
+        <p>Generate and print student ID cards from CSV data</p>
       </header>
+      <main>
+        <IdCardList students={students} />
+      </main>
     </div>
   );
 }
 
-export default App;
+export default App; 
