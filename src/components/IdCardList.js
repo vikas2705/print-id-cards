@@ -9,10 +9,6 @@ const IdCardList = ({ students }) => {
   const componentRef = useRef(null); // Initialize with null
   const onBeforeGetContentResolve = useRef(null);
 
-  const getDummyImage = (name) => {
-    const seed = name.split(' ').join('').toLowerCase();
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
-  };
 
   useEffect(() => {
     if (
@@ -42,11 +38,6 @@ const IdCardList = ({ students }) => {
     },
   });
 
-  console.log("selectedStudent ", selectedStudent)
-  console.log("componentRef ", componentRef)
-  console.log("onBeforeGetContentResolve", onBeforeGetContentResolve)
-
-
   // Filter out empty rows that might come from CSV parsing
   const validStudents = students.filter(student =>
     student.Name && student.Name.trim() !== ''
@@ -60,7 +51,7 @@ const IdCardList = ({ students }) => {
   return (
     <div className="id-card-list">
       <div className="list-header">
-        <h2>Student ID Cards ({validStudents.length} students)</h2>
+        <h2> ({validStudents.length} students)</h2>
         <p>Click "Print ID Card" to generate a print preview for each student</p>
       </div>
 

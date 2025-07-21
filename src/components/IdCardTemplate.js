@@ -16,8 +16,8 @@ export default function IdCardTemplate({student}) {
       height: '100%'
     }}>
       <template data-params="
-                min-width: 450px;
-                min-height: 270px;
+                min-width: 400px;
+                min-height: 240px;
                 rows:4;
                 cols:1;
                 column-gap:150px;
@@ -36,8 +36,8 @@ export default function IdCardTemplate({student}) {
       "></template>
 
       <div style={{
-        width: '450px',
-        height: '270px',
+        width: '400px',
+        height: '240px',
         border: '1px solid black',
         top: '10px',
         left: '30px'
@@ -136,7 +136,7 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '70px',
+        top: '74px',
         left: '200px',
         fontSize: '11px',
         fontFamily: 'sans-serif'
@@ -240,10 +240,10 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        width: '450px',
-        height: '270px',
+        width: '400px',
+        height: '240px',
         border: '1px solid black',
-        top: '10px',
+        top: '0px',
         left: '410px'
       }} data-position></div>
 

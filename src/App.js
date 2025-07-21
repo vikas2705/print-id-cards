@@ -55,7 +55,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Student ID Card Generator</h1>
-        <p>Generate and print student ID cards from CSV data</p>
       </header>
       <main>
         <IdCardList students={students} />

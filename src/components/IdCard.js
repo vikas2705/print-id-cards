@@ -67,7 +67,7 @@ const IdCard = ({ student, handlePrintTrigger }) => {
         )}
       </div>
 
-      <div >
+      <div style={{marginTop: '20px'}}>
         <button onClick={() => {
           handlePrintTrigger(student)
         }} className="print-button">Print ID Card</button>
