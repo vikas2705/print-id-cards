@@ -1,19 +1,9 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useReactToPrint } from 'react-to-print';
-// import ReactToPrint from 'react-to-print';
+import React from 'react';
 
 import './IdCard.css';
 import IdCardTemplate from './IdCardTemplate';
 
-const IdCard = ({ student,handlePrintTrigger }) => {
-
-
-  // Generate a dummy image URL based on student name
-  const getDummyImage = (name) => {
-    const seed = name.split(' ').join('').toLowerCase();
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
-  };
-
+const IdCard = ({ student, handlePrintTrigger }) => {
   return (
     <div className="id-card-container">
       {/* <div className="id-card">
@@ -73,13 +63,16 @@ const IdCard = ({ student,handlePrintTrigger }) => {
 
       <div  >
         {student && (
-         <IdCardTemplate student={student} />
+          <IdCardTemplate student={student} />
         )}
       </div>
 
-      <button onClick={()=> {
-        handlePrintTrigger(student)
-      }} className="print-button">Print ID Card</button>
+      <div >
+        <button onClick={() => {
+          handlePrintTrigger(student)
+        }} className="print-button">Print ID Card</button>
+      </div>
+
     </div>
   );
 };

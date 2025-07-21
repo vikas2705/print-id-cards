@@ -2,6 +2,7 @@ import IdCard from './IdCard';
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import './IdCardList.css';
+import IdCardTemplate from './IdCardTemplate';
 
 const IdCardList = ({ students }) => {
   const [selectedStudent, setSelectedStudent] = useState();
@@ -76,63 +77,11 @@ const IdCardList = ({ students }) => {
       )}
 
       <div>
-          {selectedStudent && (
-            <div className="id-card-main" ref={componentRef}>
-              <div className="id-card-header">
-                <div className="institution-info">
-                  <h2>STUDENT IDENTITY CARD</h2>
-                  <p className="institution-name">Shiksha Shastri (B.Ed.) Programme</p>
-                </div>
-                <div className="logo-section">
-                  <div className="logo-placeholder">LOGO</div>
-                </div>
-              </div>
-
-              <div className="id-card-body">
-                <div className="photo-section">
-                  <img
-                    src={getDummyImage(selectedStudent?.Name)}
-                    alt="Student Photo"
-                    className="student-photo"
-                  />
-                </div>
-
-                <div className="student-info">
-                  <div className="info-row">
-                    <span className="label">Name:</span>
-                    <span className="value">{selectedStudent?.Name || ''}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">User ID:</span>
-                    <span className="value">{selectedStudent['User ID'] || ''}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Form No:</span>
-                    <span className="value">{selectedStudent['Form Number'] || ''}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Programme:</span>
-                    <span className="value">{selectedStudent.Programme || ''}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Status:</span>
-                    <span className="value status-granted">{selectedStudent?.Status}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="id-card-footer">
-                <div className="signature-section">
-                  <div className="signature-line"></div>
-                  <span className="signature-label">Authorized Signature</span>
-                </div>
-                <div className="validity">
-                  <span>Valid till: 31st Dec 2025</span>
-                </div>
-              </div>
-
-            </div>
-          )}
+        {selectedStudent && (
+          <div className="id-card-main" ref={componentRef}>
+            <IdCardTemplate student={selectedStudent} />
+          </div>
+        )}
       </div>
     </div>
   );

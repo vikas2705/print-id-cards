@@ -1,4 +1,14 @@
 export default function IdCardTemplate({student}) {
+
+  console.log("student ", student);
+  const getDummyImage = (name) => {
+    return `/avatar/${name}_photo.jpg`;
+  };
+
+  const getDummySignature = (name) => {
+    return `/signature/${name}_sign.jpg`;
+  };
+
   return (
     <div style={{
       position: 'relative',
@@ -6,8 +16,8 @@ export default function IdCardTemplate({student}) {
       height: '100%'
     }}>
       <template data-params="
-                min-width: 350px;
-                min-height: 210px;
+                min-width: 450px;
+                min-height: 270px;
                 rows:4;
                 cols:1;
                 column-gap:150px;
@@ -26,8 +36,8 @@ export default function IdCardTemplate({student}) {
       "></template>
 
       <div style={{
-        height: '210px',
-        width: '350px',
+        width: '450px',
+        height: '270px',
         border: '1px solid black',
         top: '10px',
         left: '30px'
@@ -94,8 +104,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{position: 'absolute', top: '70px', left: '45px'}} data-position>
         <img 
-          src={student?.profile_photo || ''} 
-          alt={`${student?.name || 'Student'} profile photo`} 
+          src={getDummyImage(student?.['Form Number'])} 
+          alt={`${student?.Name || 'Student'} profile photo`} 
           style={{
             width: '75px',
             height: '85px'
@@ -105,8 +115,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{position: 'absolute', top: '165px', left: '45px'}} data-position>
         <img 
-          src={student?.profile_signature || ''} 
-          alt={`${student?.name || 'Student'} signature`} 
+          src={getDummySignature(student?.['Form Number'])} 
+          alt={`${student?.Name || 'Student'} signature`} 
           style={{
             width: '75px',
             height: '40px'
@@ -151,7 +161,7 @@ export default function IdCardTemplate({student}) {
         fontSize: '11px',
         fontFamily: 'sans-serif'
       }} data-position>
-        <b>: {student?.name || ''}</b>
+        <b>: {student?.Name || ''}</b>
       </div>
       
       <div style={{
@@ -171,7 +181,7 @@ export default function IdCardTemplate({student}) {
         fontSize: '11px',
         fontFamily: 'sans-serif'
       }} data-position>
-        <b>: {student?.enrolment_number || ''}</b>
+        <b>: {student?.['Enrollment Number'] || ''}</b>
       </div>
       
       <div style={{
@@ -192,7 +202,7 @@ export default function IdCardTemplate({student}) {
         fontFamily: 'sans-serif',
         width: '150px'
       }} data-position>
-        <b>{student?.programme?.title_english || ''}</b>
+        <b>{student?.Programme || ''}</b>
       </div>
       
       <div style={{
@@ -212,7 +222,7 @@ export default function IdCardTemplate({student}) {
         fontSize: '11px',
         fontFamily: 'sans-serif'
       }} data-position>
-        <b>: 31/05/{student?.year_of_enrolment && student?.programme?.minimum_duration_year ? 
+        <b>: 31/05/{student?.year_of_enrolment && student?.Programme ? 
           student.year_of_enrolment + student.programme.minimum_duration_year : ''}</b>
       </div>
       
@@ -230,8 +240,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        height: '210px',
-        width: '350px',
+        width: '450px',
+        height: '270px',
         border: '1px solid black',
         top: '10px',
         left: '410px'
@@ -243,7 +253,7 @@ export default function IdCardTemplate({student}) {
         left: '485px'
       }} data-position>
         <img 
-          src={`data:image/png;base64,${student?.barcode || ''}`} 
+          src={`barcode.jpeg`} 
           alt="Barcode" 
           style={{
             width: '200px',
