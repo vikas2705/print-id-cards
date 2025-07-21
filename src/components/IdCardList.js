@@ -36,7 +36,15 @@ const IdCardList = ({ students }) => {
       onBeforeGetContentResolve.current = null;
       setSelectedStudent(null);
     },
+    pageStyle: `@media print {
+      @page {
+        size: 7cm 4.2cm;
+        margin: 0;
+      }
+    }`
   });
+
+
 
   // Filter out empty rows that might come from CSV parsing
   const validStudents = students.filter(student =>
@@ -48,12 +56,26 @@ const IdCardList = ({ students }) => {
     handlePrint()
   }
 
+  const handlePrintAll = () => {
+    validStudents.forEach(student => {
+      setTimeout(() => {
+        setSelectedStudent({ ...student })
+        handlePrint()
+      }, 1000)
+    })
+
+  }
+
   return (
     <div className="id-card-list">
       <div className="list-header">
         <h2> ({validStudents.length} students)</h2>
         <p>Click "Print ID Card" to generate a print preview for each student</p>
       </div>
+
+      {/* <button onClick={()=> {
+        handlePrintAll()
+      }}>Print All</button> */}
 
       <div className="cards-grid">
         {validStudents.map((student, index) => (
