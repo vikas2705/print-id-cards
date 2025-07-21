@@ -91,19 +91,9 @@ export default function IdCardTemplate({student}) {
         <div>(Ministry of Education, Govt. of India)</div>
       </div>
       
-      <div style={{
-        position: 'absolute',
-        top: '60px',
-        left: '150px',
-        fontSize: '10px',
-        fontFamily: 'sans-serif',
-        fontWeight: 'bold',
-        textAlign: 'center'
-      }} data-position>
-        <div>Accredited 'A'<sup>++</sup> Grade by NAAC</div>
-      </div>
+
       
-      <div style={{position: 'absolute', top: '70px', left: '45px'}} data-position>
+      <div style={{position: 'absolute', top: '67px', left: '45px'}} data-position>
         <img 
           src={getDummyImage(student?.['Form Number'])} 
           alt={`${student?.Name || 'Student'} profile photo`} 
@@ -137,7 +127,7 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '74px',
+        top: '70px',
         left: '200px',
         fontSize: '11px',
         fontFamily: 'sans-serif'
@@ -182,7 +172,7 @@ export default function IdCardTemplate({student}) {
         fontSize: '11px',
         fontFamily: 'sans-serif'
       }} data-position>
-        <b>: {student?.['Enrollment Number'] || ''}</b>
+        <b>: {student?.['Form Number'] || ''}</b>
       </div>
       
       <div style={{
@@ -205,10 +195,31 @@ export default function IdCardTemplate({student}) {
       }} data-position>
         <b>{student?.Programme || ''}</b>
       </div>
+
+      <div style={{
+        position: 'absolute',
+        top: '147px',
+        left: '140px',
+        fontSize: '11px',
+        fontFamily: 'sans-serif'
+      }} data-position>
+        <b>Mobile Number &nbsp;&nbsp;&nbsp;:</b>
+      </div>
       
       <div style={{
         position: 'absolute',
-        top: '160px',
+        top: '147px',
+        left: '226px',
+        fontSize: '11px',
+        fontFamily: 'sans-serif',
+        width: '150px'
+      }} data-position>
+        <b>{student?.Mobile || ''}</b>
+      </div>
+      
+      <div style={{
+        position: 'absolute',
+        top: '165px',
         left: '140px',
         fontSize: '11px',
         fontFamily: 'sans-serif'
@@ -218,7 +229,7 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '160px',
+        top: '165px',
         left: '220px',
         fontSize: '11px',
         fontFamily: 'sans-serif'

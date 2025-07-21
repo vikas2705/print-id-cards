@@ -90,18 +90,6 @@ export default function IdCardTemplate({student}) {
         <div>(Ministry of Education, Govt. of India)</div>
       </div>
       
-      <div style={{
-        position: 'absolute',
-        top: '60px',
-        left: '150px',
-        fontSize: '10px',
-        fontFamily: 'sans-serif',
-        fontWeight: 'bold',
-        textAlign: 'center'
-      }} data-position>
-        <div>Accredited 'A'<sup>++</sup> Grade by NAAC</div>
-      </div>
-      
       <div style={{position: 'absolute', top: '70px', left: '45px'}} data-position>
         <img 
           src={getDummyImage(student?.['Form Number'])} 
@@ -136,7 +124,7 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '74px',
+        top: '70px',
         left: '200px',
         fontSize: '11px',
         fontFamily: 'sans-serif'
