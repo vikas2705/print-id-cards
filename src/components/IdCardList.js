@@ -38,7 +38,7 @@ const IdCardList = ({ students }) => {
     },
     pageStyle: `@media print {
       @page {
-        size: 7cm 4.2cm;
+        size: 7cm 4.4cm;
         margin: 0;
       }
     }`

@@ -15,34 +15,33 @@ export default function IdCardTemplate({student}) {
       width: '100%',
       height: '100%'
     }}>
-              <template data-params="
+      <template data-params="
                 min-width: 400px;
                 min-height: 240px;
-                 rows:4;
-                 cols:1;
-                 column-gap:150px;
-                 gap-x:60px;
-                 gap:0px;
-                 left:0px;
-                 top:0px;
-                 row-gap:50px;
-                 use-pages:true;
-                 sequence:true;
-                 output:html;
-                 wrap:true;
-                 page-size:8.6cm 5.4cm;
-                 page-orientation:P;
-                 body-content:true;
-        "></template>
+                rows:4;
+                cols:1;
+                column-gap:150px;
+                gap-x:60px;
+                gap:0px;
+                left:0px;
+                top:0px;
+                row-gap:50px;
+                use-pages:true;
+                sequence:true;
+                output:html;
+                wrap:true;
+                page-size:A4;
+                page-orientation:P;
+                body-content:true;
+      "></template>
 
-      <div 
-       className="page-1"style={{
+      <div style={{
         width: '400px',
         height: '240px',
-         border: '1px solid black',
-         top: '10px',
-         left: '30px'
-       }} data-position></div>
+        border: '1px solid black',
+        top: '10px',
+        left: '30px'
+      }} data-position></div>
       
       <div style={{position: 'absolute', left: '50px', top: '20px'}} data-position>
         <img 
@@ -239,21 +238,19 @@ export default function IdCardTemplate({student}) {
         <div>Auth. Signatory</div>
       </div>
       
-             <div
-       className="page-2"
-       style={{
-         position: 'absolute',
+      <div style={{
+        position: 'absolute',
         width: '400px',
         height: '240px',
-         border: '1px solid black',
-         top: '250px',
-        left: '0px'
-       }} data-position></div>
+        border: '1px solid black',
+        top: '0px',
+        left: '410px'
+      }} data-position></div>
 
       <div style={{
         position: 'absolute',
-        top: '263px',
-        left: '75px'
+        top: '13px',
+        left: '485px'
       }} data-position>
         <img 
           src={`barcode.jpeg`} 
@@ -267,8 +264,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '292px',
-        left: '140px',
+        top: '42px',
+        left: '550px',
         fontSize: '10px',
         fontFamily: 'sans-serif'
       }} data-position>
@@ -277,8 +274,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '305px',
-        left: '10px',
+        top: '55px',
+        left: '420px',
         fontSize: '10px',
         fontFamily: 'sans-serif',
         width: '180px'
@@ -288,8 +285,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '305px',
-        left: '200px',
+        top: '55px',
+        left: '610px',
         fontSize: '10px',
         fontFamily: 'sans-serif',
         width: '140px'
@@ -300,8 +297,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '375px',
-        left: '10px',
+        top: '125px',
+        left: '420px',
         fontSize: '10px',
         fontFamily: 'sans-serif',
         fontWeight: 'bold'
@@ -311,8 +308,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '295px',
-        left: '40px',
+        top: '145px',
+        left: '450px',
         fontSize: '9px',
         fontFamily: 'sans-serif',
         fontWeight: 'bold',
@@ -326,8 +323,8 @@ export default function IdCardTemplate({student}) {
       
       <div style={{
         position: 'absolute',
-        top: '442px',
-        left: '75px',
+        top: '192px',
+        left: '485px',
         fontSize: '9px',
         fontFamily: 'sans-serif',
         textAlign: 'center'
