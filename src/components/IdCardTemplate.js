@@ -15,33 +15,34 @@ export default function IdCardTemplate({student}) {
       width: '100%',
       height: '100%'
     }}>
-      <template data-params="
+              <template data-params="
                 min-width: 400px;
                 min-height: 240px;
-                rows:4;
-                cols:1;
-                column-gap:150px;
-                gap-x:60px;
-                gap:0px;
-                left:0px;
-                top:0px;
-                row-gap:50px;
-                use-pages:true;
-                sequence:true;
-                output:html;
-                wrap:true;
-                page-size:A4;
-                page-orientation:P;
-                body-content:true;
-      "></template>
+                 rows:4;
+                 cols:1;
+                 column-gap:150px;
+                 gap-x:60px;
+                 gap:0px;
+                 left:0px;
+                 top:0px;
+                 row-gap:50px;
+                 use-pages:true;
+                 sequence:true;
+                 output:html;
+                 wrap:true;
+                 page-size:8.6cm 5.4cm;
+                 page-orientation:P;
+                 body-content:true;
+        "></template>
 
-      <div style={{
+      <div 
+       className="page-1"style={{
         width: '400px',
         height: '240px',
-        border: '1px solid black',
-        top: '10px',
-        left: '30px'
-      }} data-position></div>
+         border: '1px solid black',
+         top: '10px',
+         left: '30px'
+       }} data-position></div>
       
       <div style={{position: 'absolute', left: '50px', top: '20px'}} data-position>
         <img 
@@ -238,14 +239,16 @@ export default function IdCardTemplate({student}) {
         <div>Auth. Signatory</div>
       </div>
       
-      <div style={{
-        position: 'absolute',
+             <div
+       className="page-2"
+       style={{
+         position: 'absolute',
         width: '400px',
         height: '240px',
-        border: '1px solid black',
-        top: '0px',
+         border: '1px solid black',
+         top: '0px',
         left: '410px'
-      }} data-position></div>
+       }} data-position></div>
 
       <div style={{
         position: 'absolute',
