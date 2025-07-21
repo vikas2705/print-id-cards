@@ -3,5 +3,5 @@ services:
   web:
     build: .
     ports:
-      - "12000:80"
+      - "12000:3000"
     container_name: print-id-cards
