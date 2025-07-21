@@ -73,4 +73,10 @@ main {
   .App-header p {
     font-size: 1rem;
   }
+
+  .App {
+    font-family: sans-serif;
+    text-align: center;
+  }
+  
 } 
