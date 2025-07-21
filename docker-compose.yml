@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "12000:80"
+    container_name: print-id-cards
