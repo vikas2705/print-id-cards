@@ -3,5 +3,5 @@ services:
   web:
     build: .
     ports:
-      - "8080:80"
+      - "12000:80"
     container_name: id-card-generator 
