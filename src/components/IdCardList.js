@@ -1,16 +1,16 @@
-import IdCard from './IdCard';
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import Papa from 'papaparse';
-import './IdCardList.css';
-import IdCardTemplate from './IdCardTemplate';
+import IdCard from "./IdCard";
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import { useReactToPrint } from "react-to-print";
+import Papa from "papaparse";
+import "./IdCardList.css";
+import NewIdCard from "./NewIdCard";
 
 const IdCardList = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
   const componentRef = useRef(null);
   const onBeforeGetContentResolve = useRef(null);
@@ -19,7 +19,7 @@ const IdCardList = () => {
   useEffect(() => {
     if (
       selectedStudent &&
-      typeof onBeforeGetContentResolve.current === 'function'
+      typeof onBeforeGetContentResolve.current === "function"
     ) {
       onBeforeGetContentResolve.current();
     }
@@ -41,10 +41,10 @@ const IdCardList = () => {
     },
     pageStyle: `@media print {
       @page {
-        size: 7cm 4.22cm;
+        size: 340px 204px;
         margin: 0;
       }
-    }`
+    }`,
   });
 
   const parseCSVFile = (file) => {
@@ -57,23 +57,23 @@ const IdCardList = () => {
       skipEmptyLines: true,
       complete: (results) => {
         if (results.errors.length > 0) {
-          setError('Error parsing CSV file. Please check the file format.');
+          setError("Error parsing CSV file. Please check the file format.");
           setLoading(false);
           return;
         }
-        
+
         // Filter out empty rows that might come from CSV parsing
-        const validStudents = results.data.filter(student =>
-          student.Name && student.Name.trim() !== ''
+        const validStudents = results.data.filter(
+          (student) => student.Name && student.Name.trim() !== ""
         );
-        
+
         setStudents(validStudents);
         setLoading(false);
       },
       error: (error) => {
-        setError('Error parsing CSV file');
+        setError("Error parsing CSV file");
         setLoading(false);
-      }
+      },
     });
   };
 
@@ -100,24 +100,24 @@ const IdCardList = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragOver(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
-      if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+      if (file.type === "text/csv" || file.name.endsWith(".csv")) {
         parseCSVFile(file);
       } else {
-        setError('Please upload a valid CSV file.');
+        setError("Please upload a valid CSV file.");
       }
     }
   };
 
   const clearData = () => {
     setStudents([]);
-    setFileName('');
+    setFileName("");
     setError(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -139,7 +139,7 @@ const IdCardList = () => {
     <div className="id-card-list">
       <div className="list-header">
         <h2>Student ID Card Generator</h2>
-        
+
         {/* File Upload Section */}
         <div className="file-upload-section">
           <input
@@ -147,12 +147,12 @@ const IdCardList = () => {
             ref={fileInputRef}
             accept=".csv"
             onChange={handleFileUpload}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
-          
+
           {!fileName ? (
-            <div 
-              className={`upload-area ${isDragOver ? 'drag-over' : ''}`}
+            <div
+              className={`upload-area ${isDragOver ? "drag-over" : ""}`}
               onClick={handleFileSelect}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -194,7 +194,9 @@ const IdCardList = () => {
         {students.length > 0 && (
           <div className="data-info">
             <h3>Loaded {students.length} students</h3>
-            <p>Click "Print ID Card" to generate a print preview for each student</p>
+            <p>
+              Click "Print ID Card" to generate a print preview for each student
+            </p>
             <button onClick={handlePrintAll} className="btn-primary">
               Print All ID Cards
             </button>
@@ -204,26 +206,35 @@ const IdCardList = () => {
 
       <div className="cards-grid">
         {students.map((student, index) => (
-          <IdCard key={index} student={student} handlePrintTrigger={handlePrintTrigger} />
+          <IdCard
+            key={index}
+            student={student}
+            handlePrintTrigger={handlePrintTrigger}
+          />
         ))}
       </div>
 
       {students.length === 0 && !loading && !error && !fileName && (
         <div className="no-data">
-          <p>No student data loaded. Please upload a CSV file to get started.</p>
+          <p>
+            No student data loaded. Please upload a CSV file to get started.
+          </p>
         </div>
       )}
 
       {students.length === 0 && fileName && !loading && !error && (
         <div className="no-data">
-          <p>No valid student data found in the uploaded file. Please check the CSV format.</p>
+          <p>
+            No valid student data found in the uploaded file. Please check the
+            CSV format.
+          </p>
         </div>
       )}
 
       <div>
         {selectedStudent && (
           <div className="id-card-main" ref={componentRef}>
-            <IdCardTemplate student={selectedStudent} />
+            <NewIdCard student={selectedStudent} />
           </div>
         )}
       </div>
@@ -231,4 +242,4 @@ const IdCardList = () => {
   );
 };
 
-export default IdCardList; 
+export default IdCardList;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import './IdCard.css';
-import IdCardTemplate from './IdCardTemplate';
+import "./IdCard.css";
+import NewIdCard from "./NewIdCard";
 
 const IdCard = ({ student, handlePrintTrigger }) => {
   return (
@@ -61,20 +61,20 @@ const IdCard = ({ student, handlePrintTrigger }) => {
         </div>
       </div> */}
 
-      <div  >
-        {student && (
-          <IdCardTemplate student={student} />
-        )}
-      </div>
+      <div>{student && <NewIdCard student={student} />}</div>
 
-      <div style={{position: 'absolute', bottom: '20px', right: '20px'}}>
-        <button onClick={() => {
-          handlePrintTrigger(student)
-        }} className="print-button">Print ID Card</button>
+      <div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
+        <button
+          onClick={() => {
+            handlePrintTrigger(student);
+          }}
+          className="print-button"
+        >
+          Print ID Card
+        </button>
       </div>
-
     </div>
   );
 };
 
-export default IdCard; 
+export default IdCard;
