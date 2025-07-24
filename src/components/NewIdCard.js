@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import JsBarcode from "jsbarcode";
 
 const NewIdCard = ({ student }) => {
-  console.log("student ", student);
+  const barcodeRef = useRef(null);
 
   const getDummyImage = (formNo) => {
     return `/avatar/${formNo}_photo.jpg`;
@@ -11,10 +12,29 @@ const NewIdCard = ({ student }) => {
     return `/signature/${formNo}_sign.jpg`;
   };
 
+  // function to generate barcode for registration number
+  useEffect(() => {
+    if (barcodeRef.current && student?.["Form Number"]) {
+      try {
+        JsBarcode(barcodeRef.current, student["Form Number"], {
+          format: "CODE128",
+          width: 2,
+          height: 25,
+          displayValue: false,
+          background: "#ffffff",
+          lineColor: "#000000",
+          margin: 0,
+        });
+      } catch (error) {
+        console.error("Error generating barcode:", error);
+      }
+    }
+  }, [student]);
+
   return (
     <div className="flex flex-col gap-2">
       {/* Front Side of ID Card */}
-      <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col px-1">
+      <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col px-1 rounded-xl">
         <div className="flex items-center p-2 border-b-2 border-b-blue-800 h-1/3">
           <img
             src="https://slbsrsv.samarth.ac.in/uploads/uims/b8f484f38959e08ff58b9e1cc33e6e7b2a7c4267976468fe2582c247b3c5f7fb1_1642401054_72516497_logo.png"
@@ -34,7 +54,7 @@ const NewIdCard = ({ student }) => {
             <div className="text-[10px] text-red-600 leading-tight">
               (A Central University)
             </div>
-            <div className="h-[0.7px] bg-blue-800 w-[100px] self-center"></div>
+            <div className="h-[1px] bg-blue-800 w-[100px] self-center"></div>
             <div className="text-[10px] text-red-700 leading-tight">
               MINISTRY OF EDUCATION, GOVT. OF INDIA
             </div>
@@ -42,9 +62,9 @@ const NewIdCard = ({ student }) => {
         </div>
 
         {/* main content */}
-        <div className="pl-2 h-2/3">
+        <div className="pl-2 h-2/3 pb-[2px]">
           <div className="flex items-start justify-between mb-1 w-full">
-            <div className="flex flex-col items-start text-black leading-3 mt-1">
+            <div className="flex flex-col items-start text-black font-semibold leading-3 mt-1">
               <div className="text-red-600 font-semibold text-[10px]">
                 Reg.No.
               </div>
@@ -52,18 +72,16 @@ const NewIdCard = ({ student }) => {
                 {student?.["Form Number"] || ""}
               </div>
             </div>
-            <div className="text-center mt-1 place-self-center ml-4">
+            <div className="text-center mt-1 place-self-center ml-8">
               <div className="text-[9px] font-semibold text-red-800 leading-3">
-                IDENTITY-CARD
+                IDENTITY CARD
               </div>
-              <div className="h-[0.5px] bg-red-800 w-[80px] self-center" />
-
+              <div className="h-[0.5px] bg-red-800 w-[80px] self-center"></div>
               <div className="text-[8px] font-semibold text-red-800 italic leading-3">
                 Session (2024-26)
               </div>
             </div>
-            {/* NAAC Accreditation */}
-            <div className="text-[6px] font-medium text-black text-right italic">
+            <div className="text-[7px] font-medium text-black text-right italic">
               Accredited 'A++' Grade by NAAC
             </div>
           </div>
@@ -72,7 +90,9 @@ const NewIdCard = ({ student }) => {
               {/* Student Photo */}
               <div class="flex items-center w-[65px] h-[65px]">
                 <img
-                  src={getDummyImage(student?.["Form Number"])}
+                  src={
+                    student?.photo || getDummyImage(student?.["Form Number"])
+                  }
                   alt={`${student?.Name || "Student"} profile photo`}
                   className="w-full h-full object-cover border border-gray-300"
                 />
@@ -81,7 +101,9 @@ const NewIdCard = ({ student }) => {
               {/* Student Signature */}
               <div className="flex flex-col items-center">
                 <img
-                  src={getDummySignature(student?.["Form Number"])}
+                  src={
+                    student?.sign || getDummySignature(student?.["Form Number"])
+                  }
                   alt={`${student?.Name || "Student"} signature`}
                   className="w-[35px] h-[20px] object-contain"
                 />
@@ -90,49 +112,52 @@ const NewIdCard = ({ student }) => {
                 </div>
               </div>
             </div>
-            <div className="text-[8px] text-black flex flex-col items-start justify-start gap-[2px] flex-1">
-              <div className="flex items-center mt-1">
-                <span className="w-[40px] text-start font-bold">NAME </span>
-                <span>:</span>
-                <span className="mx-3 uppercase">{student?.Name || ""}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="w-[40px] text-start font-bold">F-NAME</span>
-                <span>:</span>
-                <span className="mx-3 uppercase">
-                  {student?.Father_Name || "--"}
-                </span>
-              </div>
-              <div className="flex items-center">
-                <span className="w-[40px] text-start font-bold">CLASS</span>
-                <span>:</span>
-                <span className="mx-3 uppercase">
-                  {student?.Programme || "--"}
-                </span>
-              </div>
-              <div className="flex items-center">
-                <span className="w-[40px] text-start font-bold">DOB</span>
-                <span>:</span>
-                <span className="mx-3 uppercase">
-                  {student?.dob
-                    ? new Date(student.dob).toLocaleDateString("en-GB")
-                    : "--"}
-                </span>
+            <div className="text-[8px] text-black flex flex-col items-start justify-between gap-[2px] flex-1">
+              <div className="flex flex-col items-start justify-start gap-[2px]">
+                <div className="flex items-center mt-1">
+                  <span className="w-[40px] text-start font-bold">NAME </span>
+                  <span>:</span>
+                  <span className="mx-2.5 uppercase">
+                    {student?.Name || ""}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="w-[40px] text-start font-bold">F-NAME</span>
+                  <span>:</span>
+                  <span className="mx-2.5 uppercase">
+                    {student?.father_name || "--"}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="w-[40px] text-start font-bold">CLASS</span>
+                  <span>:</span>
+                  <span className="mx-2.5 uppercase">
+                    {student?.programName || "--"}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <span className="w-[40px] text-start font-bold">DOB</span>
+                  <span>:</span>
+                  <span className="mx-2.5 uppercase">
+                    {student?.dob
+                      ? new Date(student.dob).toLocaleDateString("en-GB")
+                      : "--"}
+                  </span>
+                </div>
               </div>
               <div className="flex items-center justify-between gap-2 mt-2 w-full">
                 {/* Barcode Section */}
-                <div className="flex flex-col items-center">
-                  <img
-                    src="/barcode.jpeg"
-                    alt="Barcode"
-                    className="w-[100px] h-[15px]"
+                <div className="flex flex-col items-center mb-3 ml-0.5">
+                  <svg
+                    ref={barcodeRef}
+                    className="w-[180px] h-[15px] object-cover"
                   />
-                  <div className="text-[7px] text-black mt-1">
+                  {/* <div className="text-[7px] text-black mt-1">
                     {student?.["Form Number"] || ""}
-                  </div>
+                  </div> */}
                 </div>
                 {/* Auth Signatory */}
-                <div className="text-[7px] text-black self-end">
+                <div className="text-[7px] text-black self-end min-w-max">
                   Auth. Signatory
                 </div>
               </div>
@@ -142,7 +167,7 @@ const NewIdCard = ({ student }) => {
       </div>
 
       {/* Back Side of ID Card */}
-      <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col relative">
+      <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col relative rounded-xl overflow-clip">
         {/* Main Content */}
         <div className="pt-1 pl-2 pr-1 text-[8px] text-black flex-1 flex flex-col gap-[2.5px]">
           <div className="flex items-center">
@@ -150,10 +175,10 @@ const NewIdCard = ({ student }) => {
             <span>:</span>
             <span className="mx-2">
               {student?.permanent_address
-                ? `${student?.permanent_address},`
+                ? `${student?.permanent_address}`
                 : ""}
               {student?.permanent_state || ""}
-              {student?.permanent_pincode || "--"}
+              {student?.permanent_pincode || ""}
             </span>
           </div>
           <div className="flex items-center">
@@ -165,12 +190,12 @@ const NewIdCard = ({ student }) => {
             <div className="flex items-center">
               <span className="w-[30px] text-start">Mobile</span>
               <span>:</span>
-              <span className="mx-1">{student?.Mobile || "--"}</span>
+              <span className="mx-1">{student?.mobile || "--"}</span>
             </div>
             <div className="flex items-center">
               <span className="w-[30px] text-start">E-Mail</span>
               <span>:</span>
-              <span className="mx-1 italic">{student?.Email || "--"}</span>
+              <span className="mx-1 italic">{student?.email || "--"}</span>
             </div>
           </div>
           <div className="flex items-start justify-between w-full">
