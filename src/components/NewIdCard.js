@@ -139,9 +139,7 @@ const NewIdCard = ({ student }) => {
                   <span className="w-[40px] text-start font-bold">DOB</span>
                   <span>:</span>
                   <span className="mx-2.5 uppercase">
-                    {student?.dob
-                      ? new Date(student.dob).toLocaleDateString("en-GB")
-                      : "--"}
+                    {student?.dob || "--"}
                   </span>
                 </div>
               </div>
