@@ -369,27 +369,14 @@ const IdCardList = () => {
         </div>
       </div>
 
-      {/* Current Uploads Section */}
-      <div className="rounded-lg p-4 bg-gray-200 space-y-2 shadow-lg">
-        <div className="font-semibold text-lg">Current Uploads</div>
-        <div className="flex items-center justify-around">
-          <div className="flex flex-col gap-1 items-center">
-            <div className="text-xl font-semibold">{totalRecords}</div>
-            <div className="text-sm text-gray-600">Total records</div>
-          </div>
-          <div className="flex flex-col gap-1 items-center">
-            <div className="text-xl font-semibold">{generatedCards}</div>
-            <div className="text-sm text-gray-600">Generated cards</div>
-          </div>
-        </div>
-      </div>
-
       {/* Generated Cards Header Section */}
       <div className="rounded-lg bg-gray-200 p-4 shadow-lg">
         <div className="flex items-center justify-between">
-          <div className="font-bold text-lg">
-            Generated Cards ({generatedCards})
+          <div className="flex flex-col text-lg font-bold">
+            <div>Total records ({totalRecords})</div>
+            <div>Generated cards ({generatedCards})</div>
           </div>
+
           <div className="flex items-center gap-2 bg-white rounded-full px-5 py-2 w-[360px]">
             <img src={SearchIcon} alt="search" width={16} height={16} />
             <input
@@ -454,38 +441,46 @@ const IdCardList = () => {
         </div>
       </div>
 
-      {messageToShow ? (
-        <div className="h-64 flex items-center justify-center">
-          <div
-            className={`text-center py-8 px-6 rounded-lg shadow-lg ${
-              messageToShow.type === "info"
-                ? "bg-blue-50 text-blue-700 border border-blue-200"
-                : messageToShow.type === "warning"
-                ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
-                : "bg-gray-50 text-gray-500 border border-gray-200"
-            }`}
-          >
-            <div className="text-lg font-medium mb-2">
-              {messageToShow.type === "info" && "📁 No Files Uploaded"}
-              {messageToShow.type === "warning" && "⚠️ No Data Found"}
-              {messageToShow.type === "search" && "🔍 No Results"}
+      <div className="border border-gray-200 rounded-lg">
+        <div className="py-4 pl-4">
+          <div className="max-h-[600px] overflow-y-auto">
+            <div className="pr-4">
+              {messageToShow ? (
+                <div className="h-64 flex items-center justify-center">
+                  <div
+                    className={`text-center py-8 px-6 rounded-lg shadow-lg ${
+                      messageToShow.type === "info"
+                        ? "bg-blue-50 text-blue-700 border border-blue-200"
+                        : messageToShow.type === "warning"
+                        ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
+                        : "bg-gray-50 text-gray-500 border border-gray-200"
+                    }`}
+                  >
+                    <div className="text-lg font-medium mb-2">
+                      {messageToShow.type === "info" && "📁 No Files Uploaded"}
+                      {messageToShow.type === "warning" && "⚠️ No Data Found"}
+                      {messageToShow.type === "search" && "🔍 No Results"}
+                    </div>
+                    <div className="text-sm">{messageToShow.message}</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredStudents.map((student, index) => (
+                    <IdCard
+                      key={index}
+                      student={student}
+                      handlePrintTrigger={handlePrintTrigger}
+                      isSelected={selectedCards.includes(student.formNumber)}
+                      onSelect={() => handleSelectCard(student.formNumber)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-            <div className="text-sm">{messageToShow.message}</div>
           </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredStudents.map((student, index) => (
-            <IdCard
-              key={index}
-              student={student}
-              handlePrintTrigger={handlePrintTrigger}
-              isSelected={selectedCards.includes(student.formNumber)}
-              onSelect={() => handleSelectCard(student.formNumber)}
-            />
-          ))}
-        </div>
-      )}
+      </div>
 
       {/* Hidden print component */}
       <div style={{ display: "none" }}>
