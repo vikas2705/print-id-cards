@@ -3,6 +3,8 @@ import "./App.css";
 import IdCardList from "./components/IdCardList";
 import Template from "./components/template";
 import Logo from "./assets/Logo.svg";
+import FooterSection from "./components/footer";
+import RsideArticle from "./components/rsideArticle";
 
 function App() {
   return (
@@ -19,19 +21,19 @@ function App() {
         <div>Powered by Synthlane</div>
       </header>
       <main className="flex flex-col w-full gap-10">
-        <div className="w-full flex gap-2">
-          <div className="w-[80%]">
+        <div className="w-full flex justify-between">
+          <div className="w-[75%]">
 
             <Template />
 
           </div>
-          <div className="w-[20%] bg-white rounded-lg h-24">
-
+          <div className="w-[22%] bg-white rounded-lg h-[422px]">
+            <RsideArticle/>
           </div>
         </div>
         <IdCardList />
       </main>
-      <footer></footer>
+      <FooterSection />
     </div>
   );
 }
