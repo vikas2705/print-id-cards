@@ -7,6 +7,11 @@ import "./IdCardList.css";
 import IdCard from "./IdCard";
 import { openDB } from "idb";
 import NewIdCard from "./NewIdCard";
+import ClearIcon from "../assets/ClearIcon.svg";
+import UploadIcon from "../assets/UploadIcon.svg";
+import PrinterIcon from "../assets/PrinterIcon.svg";
+import SearchIcon from "../assets/Search.svg";
+
 // IndexedDB utility functions
 const dbPromise = openDB("StudentFilesDB", 1, {
   upgrade(db) {
@@ -15,15 +20,17 @@ const dbPromise = openDB("StudentFilesDB", 1, {
     }
   },
 });
+
 async function storeFileInIndexedDB(file, key) {
   const db = await dbPromise;
   await db.put("files", file, key);
 }
-// Usage: const file = await getFileFromIndexedDB(key);
+
 async function getFileFromIndexedDB(key) {
   const db = await dbPromise;
   return db.get("files", key);
 }
+
 const IdCardList = () => {
   const [students, setStudents] = useState([]);
   const [excelData, setExcelData] = useState([]);
@@ -32,12 +39,15 @@ const IdCardList = () => {
   const [error, setError] = useState(null);
   const [fileName, setFileName] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCards, setSelectedCards] = useState([]);
   const componentRef = useRef(null);
   const onBeforeGetContentResolve = useRef(null);
   const xlsxInputRef = useRef(null);
   const zipInputRef = useRef(null);
   const [xlsxFileName, setXlsxFileName] = useState("");
   const [zipFileName, setZipFileName] = useState("");
+
   useEffect(() => {
     if (
       selectedStudent &&
@@ -46,11 +56,13 @@ const IdCardList = () => {
       onBeforeGetContentResolve.current();
     }
   }, [selectedStudent]);
+
   const handleOnBeforeGetContent = useCallback((student) => {
     return new Promise((resolve) => {
       onBeforeGetContentResolve.current = resolve;
     });
   }, []);
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: selectedStudent?.Name,
@@ -66,6 +78,7 @@ const IdCardList = () => {
       }
     }`,
   });
+
   // Utility function to truncate file names
   const truncateFileName = (name, maxLength = 22) => {
     if (!name) return "";
@@ -73,6 +86,7 @@ const IdCardList = () => {
       ? name.slice(0, maxLength - 3) + "..."
       : name;
   };
+
   const handleXlsxUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -87,6 +101,7 @@ const IdCardList = () => {
     };
     reader.readAsArrayBuffer(file);
   };
+
   const handleZipUpload = async (event) => {
     const file = event.target.files[0];
     if (!file || excelData.length === 0) {
@@ -110,7 +125,6 @@ const IdCardList = () => {
           csvData = parsed;
         }
         // Match any path containing /photo/ and ending with _photo.jpg or _photo.jpeg
-
         const photoMatch = filename.match(/\/photo\/(.*?)_photo\.(jpg|jpeg)$/i);
         if (photoMatch) {
           const formNumber = photoMatch[1];
@@ -180,19 +194,23 @@ const IdCardList = () => {
     setStudents(combined);
     setLoading(false);
   };
+
   const clearData = () => {
     setStudents([]);
     setExcelData([]);
     setXlsxFileName("");
     setZipFileName("");
     setError(null);
+    setSelectedCards([]);
     if (xlsxInputRef.current) xlsxInputRef.current.value = "";
     if (zipInputRef.current) zipInputRef.current.value = "";
   };
+
   const handlePrintTrigger = (student) => {
     setSelectedStudent({ ...student });
     handlePrint();
   };
+
   const handlePrintAll = () => {
     students.forEach((student, index) => {
       setTimeout(() => {
@@ -201,175 +219,181 @@ const IdCardList = () => {
       }, index * 1000);
     });
   };
+
+  // Search functionality
+  const filteredStudents = students.filter((student) => {
+    const searchLower = searchTerm.toLowerCase();
+    const name = (student.Name || "").toLowerCase();
+    const enrollmentNo = (student["Enrollment No"] || "").toLowerCase();
+    return name.includes(searchLower) || enrollmentNo.includes(searchLower);
+  });
+
+  // Card selection logic
+  const handleSelectCard = (studentId) => {
+    setSelectedCards((prev) =>
+      prev.includes(studentId)
+        ? prev.filter((id) => id !== studentId)
+        : [...prev, studentId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedCards.length === filteredStudents.length) {
+      setSelectedCards([]);
+    } else {
+      setSelectedCards(filteredStudents.map((student) => student.formNumber));
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-8">
-      <div className="rounded-lg p-4 bg-gray-200 space-y-2">
+    <div className="flex flex-col gap-8 p-6">
+      {/* Upload Data Section */}
+      <div className="rounded-lg p-4 bg-gray-200 space-y-4">
         <div className="flex items-center justify-between">
-          <div className="font-semibold">Upload Data</div>
-          <div className="flex item-center gap-1 bg-white rounded-full justify-center px-3 py-2">
-            <div>Icon</div>
-            <div>Clear Data</div>
-          </div>
+          <div className="font-semibold text-lg">Upload Data</div>
+          <button
+            onClick={clearData}
+            className="flex items-center gap-2 bg-white rounded-full px-4 py-2 hover:bg-gray-50 transition-colors"
+          >
+            <img src={ClearIcon} alt="clear" width={12} height={12} />
+            <span>Clear Data</span>
+          </button>
         </div>
+
         <div className="flex items-center gap-4 w-full">
-          <div className="h-[250px] bg-white border border-dotted rounded-lg border-gray-400 w-1/2 flex items-center justify-center">
-            <div className="space-y-1 text-center">
-              <button
-                onClick={() => xlsxInputRef.current.click()}
-                className=""
-                title={xlsxFileName || "Upload Excel (.xlsx)"}
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
+          {/* Excel Upload */}
+          <div
+            className="h-[250px] bg-white border-2 border-dashed border-gray-400 rounded-lg w-1/2 flex items-center justify-center hover:border-gray-500 transition-colors cursor-pointer"
+            onClick={() => xlsxInputRef.current.click()}
+          >
+            <div className="flex flex-col items-center gap-2">
+              <img src={UploadIcon} alt="upload" width={24} height={24} />
+              <input
+                type="file"
+                ref={xlsxInputRef}
+                accept=".xlsx"
+                onChange={handleXlsxUpload}
+                style={{ display: "none" }}
+              />
+              <div className="text-blue-600 hover:text-blue-700 font-medium">
                 {xlsxFileName
                   ? truncateFileName(xlsxFileName)
-                  : "Upload Excel (.xlsx)"}
-              </button>
-              <div className="text-sm">
-                Drop your Excel file here or click to browse
+                  : "Drop your Excel file here or click to browse"}
               </div>
-              <div className="text-xs">supported formats: .xlsx, .csv</div>
+              <div className="text-sm text-gray-600">
+                Supported formats: .xlsx
+              </div>
             </div>
           </div>
-          <div className="h-[250px] bg-white border border-dotted rounded-lg border-gray-400 w-1/2 flex items-center justify-center">
-            <input
-              type="file"
-              ref={zipInputRef}
-              accept=".zip"
-              onChange={handleZipUpload}
-              style={{ display: "none" }}
-            />
+
+          {/* Zip Upload */}
+          <div
+            className="h-[250px] bg-white border-2 border-dashed border-gray-400 rounded-lg w-1/2 flex items-center justify-center hover:border-gray-500 transition-colors cursor-pointer"
+            onClick={() => zipInputRef.current.click()}
+          >
+            <div className="flex flex-col items-center gap-2">
+              <img src={UploadIcon} alt="upload" width={24} height={24} />
+              <input
+                type="file"
+                ref={zipInputRef}
+                accept=".zip"
+                onChange={handleZipUpload}
+                style={{ display: "none" }}
+              />
+              <div className="text-blue-600 hover:text-blue-700 font-medium">
+                {zipFileName
+                  ? truncateFileName(zipFileName)
+                  : "Drop your Zip file here or click to browse"}
+              </div>
+              <div className="text-sm text-gray-600">
+                Supported formats: .zip
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Current Uploads Section */}
       <div className="rounded-lg p-4 bg-gray-200 space-y-2">
-        <div className="font-semibold">Current Uploads</div>
+        <div className="font-semibold text-lg">Current Uploads</div>
         <div className="flex items-center justify-around">
           <div className="flex flex-col gap-1 items-center">
-            <div>{}</div>
+            <div className="text-xl font-semibold">{students.length}</div>
+            <div className="text-sm text-gray-600">Total records</div>
+          </div>
+          <div className="flex flex-col gap-1 items-center">
+            <div className="text-xl font-semibold">{students.length}</div>
+            <div className="text-sm text-gray-600">Generated cards</div>
           </div>
         </div>
       </div>
+
+      {/* Generated Cards Section */}
+      <div className="rounded-lg bg-gray-200 space-y-4">
+        <div className="px-4 py-3 flex items-center justify-between">
+          <div className="font-bold text-lg">
+            Generated Cards ({students.length})
+          </div>
+          <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 w-[360px]">
+            <img src={SearchIcon} alt="search" width={16} height={16} />
+            <input
+              type="text"
+              placeholder="Search by name or enrollment number..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="focus:outline-none w-full"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleSelectAll}
+              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              Select All
+            </button>
+
+            <button
+              onClick={handlePrintAll}
+              className="flex items-center gap-2 bg-gray-600 text-white rounded-lg px-4 py-2 hover:bg-gray-700 transition-colors"
+            >
+              <img src={PrinterIcon} alt="print" width={16} height={16} />
+              <span>Print</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="px-4 pb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredStudents.map((student, index) => (
+              <IdCard
+                key={index}
+                student={student}
+                handlePrintTrigger={handlePrintTrigger}
+                isSelected={selectedCards.includes(student.formNumber)}
+                onSelect={() => handleSelectCard(student.formNumber)}
+              />
+            ))}
+          </div>
+
+          {filteredStudents.length === 0 && students.length > 0 && (
+            <div className="text-center py-8 text-gray-500">
+              No cards match your search criteria.
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Hidden print component */}
+      <div style={{ display: "none" }}>
+        {selectedStudent && (
+          <div className="id-card-main" ref={componentRef}>
+            <NewIdCard student={selectedStudent} />
+          </div>
+        )}
+      </div>
     </div>
-    // <div className="id-card-list">
-    //   <div className="list-header ">
-    //     <h2>Student ID Card Generator</h2>
-    //     <div className="file-upload-section">
-    //       <input
-    //         type="file"
-    //         ref={xlsxInputRef}
-    //         accept=".xlsx"
-    //         onChange={handleXlsxUpload}
-    //         style={{ display: "none" }}
-    //       />
-    //       <input
-    //         type="file"
-    //         ref={zipInputRef}
-    //         accept=".zip"
-    //         onChange={handleZipUpload}
-    //         style={{ display: "none" }}
-    //       />
-    //       <div className="file-actions">
-    //         <button
-    //           onClick={() => xlsxInputRef.current.click()}
-    //           className="btn-secondary file-btn"
-    //           title={xlsxFileName || "Upload Excel (.xlsx)"}
-    //           style={{
-    //             maxWidth: 180,
-    //             overflow: "hidden",
-    //             textOverflow: "ellipsis",
-    //             whiteSpace: "nowrap",
-    //           }}
-    //         >
-    //           {xlsxFileName
-    //             ? truncateFileName(xlsxFileName)
-    //             : "Upload Excel (.xlsx)"}
-    //         </button>
-    //         <button
-    //           onClick={() => zipInputRef.current.click()}
-    //           className="btn-secondary file-btn"
-    //           title={zipFileName || "Upload Zip (.zip)"}
-    //           style={{
-    //             maxWidth: 180,
-    //             overflow: "hidden",
-    //             textOverflow: "ellipsis",
-    //             whiteSpace: "nowrap",
-    //           }}
-    //         >
-    //           {zipFileName
-    //             ? truncateFileName(zipFileName)
-    //             : "Upload Zip (.zip)"}
-    //         </button>
-    //         <button onClick={clearData} className="btn-secondary">
-    //           Clear Data
-    //         </button>
-    //       </div>
-    //     </div>
-    //     {loading && (
-    //       <div className="loading">
-    //         <p>Processing files...</p>
-    //       </div>
-    //     )}
-    //     {error && (
-    //       <div className="error">
-    //         <p>{error}</p>
-    //       </div>
-    //     )}
-    //     {students.length > 0 && (
-    //       <div className="data-info">
-    //         <h3>Loaded {students.length} students</h3>
-    //         <p>
-    //           Click "Print ID Card" to generate a print preview for each student
-    //         </p>
-    //         <button onClick={handlePrintAll} className="btn-primary">
-    //           Print All ID Cards
-    //         </button>
-    //       </div>
-    //     )}
-    //   </div>
-    //   <div className="cards-grid">
-    //     {students.map((student, index) => (
-    //       <IdCard
-    //         key={index}
-    //         student={student}
-    //         handlePrintTrigger={handlePrintTrigger}
-    //       />
-    //     ))}
-    //   </div>
-    //   {students.length === 0 &&
-    //     !loading &&
-    //     !error &&
-    //     !xlsxFileName &&
-    //     !zipFileName && (
-    //       <div className="no-data">
-    //         <p>
-    //           No student data loaded. Please upload the Excel and ZIP files to
-    //           get started.
-    //         </p>
-    //       </div>
-    //     )}
-    //   {students.length === 0 &&
-    //     (xlsxFileName || zipFileName) &&
-    //     !loading &&
-    //     !error && (
-    //       <div className="no-data">
-    //         <p>
-    //           No valid student data found in the uploaded files. Please check
-    //           the formats.
-    //         </p>
-    //       </div>
-    //     )}
-    //   <div>
-    //     {selectedStudent && (
-    //       <div className="id-card-main" ref={componentRef}>
-    //         <NewIdCard student={selectedStudent} />
-    //       </div>
-    //     )}
-    //   </div>
-    // </div>
   );
 };
+
 export default IdCardList;

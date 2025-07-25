@@ -1,78 +1,32 @@
 import React from "react";
-
 import "./IdCard.css";
 import NewIdCard from "./NewIdCard";
+import PrinterBlackIcon from "../assets/PrinterBlack.svg";
 
-const IdCard = ({ student, handlePrintTrigger }) => {
+const IdCard = ({ student, handlePrintTrigger, isSelected, onSelect }) => {
   return (
-    <div className="id-card-container">
-      {/* <div className="id-card">
-        <div className="id-card-header">
-          <div className="institution-info">
-            <h2>STUDENT IDENTITY CARD</h2>
-            <p className="institution-name">Shiksha Shastri (B.Ed.) Programme</p>
-          </div>
-          <div className="logo-section">
-            <div className="logo-placeholder">LOGO</div>
-          </div>
+    <div className="bg-gray-500 rounded-lg shadow-lg overflow-hidden border border-gray-200 p-6 flex flex-col items-center gap-4">
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={onSelect}
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+          />
         </div>
 
-        <div className="id-card-body">
-          <div className="photo-section">
-            <img
-              src={getDummyImage(student.Name)}
-              alt="Student Photo"
-              className="student-photo"
-            />
-          </div>
-
-          <div className="student-info">
-            <div className="info-row">
-              <span className="label">Name:</span>
-              <span className="value">{student.Name}</span>
-            </div>
-            <div className="info-row">
-              <span className="label">User ID:</span>
-              <span className="value">{student['User ID']}</span>
-            </div>
-            <div className="info-row">
-              <span className="label">Form No:</span>
-              <span className="value">{student['Form Number']}</span>
-            </div>
-            <div className="info-row">
-              <span className="label">Programme:</span>
-              <span className="value">{student.Programme}</span>
-            </div>
-            <div className="info-row">
-              <span className="label">Status:</span>
-              <span className="value status-granted">{student.Status}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="id-card-footer">
-          <div className="signature-section">
-            <div className="signature-line"></div>
-            <span className="signature-label">Authorized Signature</span>
-          </div>
-          <div className="validity">
-            <span>Valid till: 31st Dec 2025</span>
-          </div>
-        </div>
-      </div> */}
-
-      <div>{student && <NewIdCard student={student} />}</div>
-
-      <div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
         <button
-          onClick={() => {
-            handlePrintTrigger(student);
-          }}
-          className="print-button"
+          onClick={() => handlePrintTrigger(student)}
+          className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors border border-gray-200"
+          title="Print ID Card"
         >
-          Print ID Card
+          <img src={PrinterBlackIcon} alt="print" width={16} height={16} />
         </button>
       </div>
+
+      {/* ID Card content with padding */}
+      <div className="">{student && <NewIdCard student={student} />}</div>
     </div>
   );
 };
