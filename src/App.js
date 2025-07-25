@@ -1,18 +1,26 @@
 import React from "react";
 import "./App.css";
 import IdCardList from "./components/IdCardList";
-import NewIdCard from "./components/NewIdCard";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Student ID Card Generator</h1>
-        <p>New University ID Card Design</p>
+    <div className="px-20 py-10 bg-white min-h-screen space-y-8">
+      <header className="flex items-start justify-between">
+        <div>Icon</div>
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-2xl font-bold uppercase">ID Card Generator</div>
+          <div className="flex flex-col items-center text-sm">
+            <div>In association with</div>
+            <div>Shri Lal Bahadur Shastri National Sanskrit University</div>
+          </div>
+        </div>
+        <div>Powered by Synthlane</div>
       </header>
       <main>
+        
         <IdCardList />
       </main>
+      <footer></footer>
     </div>
   );
 }

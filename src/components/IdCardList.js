@@ -202,122 +202,174 @@ const IdCardList = () => {
     });
   };
   return (
-    <div className="id-card-list">
-      <div className="list-header">
-        <h2>Student ID Card Generator</h2>
-        <div className="file-upload-section">
-          <input
-            type="file"
-            ref={xlsxInputRef}
-            accept=".xlsx"
-            onChange={handleXlsxUpload}
-            style={{ display: "none" }}
-          />
-          <input
-            type="file"
-            ref={zipInputRef}
-            accept=".zip"
-            onChange={handleZipUpload}
-            style={{ display: "none" }}
-          />
-          <div className="file-actions">
-            <button
-              onClick={() => xlsxInputRef.current.click()}
-              className="btn-secondary file-btn"
-              title={xlsxFileName || "Upload Excel (.xlsx)"}
-              style={{
-                maxWidth: 180,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {xlsxFileName
-                ? truncateFileName(xlsxFileName)
-                : "Upload Excel (.xlsx)"}
-            </button>
-            <button
-              onClick={() => zipInputRef.current.click()}
-              className="btn-secondary file-btn"
-              title={zipFileName || "Upload Zip (.zip)"}
-              style={{
-                maxWidth: 180,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {zipFileName
-                ? truncateFileName(zipFileName)
-                : "Upload Zip (.zip)"}
-            </button>
-            <button onClick={clearData} className="btn-secondary">
-              Clear Data
-            </button>
+    <div className="flex flex-col gap-8">
+      <div className="rounded-lg p-4 bg-gray-200 space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="font-semibold">Upload Data</div>
+          <div className="flex item-center gap-1 bg-white rounded-full justify-center px-3 py-2">
+            <div>Icon</div>
+            <div>Clear Data</div>
           </div>
         </div>
-        {loading && (
-          <div className="loading">
-            <p>Processing files...</p>
+        <div className="flex items-center gap-4 w-full">
+          <div className="h-[250px] bg-white border border-dotted rounded-lg border-gray-400 w-1/2 flex items-center justify-center">
+            <div className="space-y-1 text-center">
+              <button
+                onClick={() => xlsxInputRef.current.click()}
+                className=""
+                title={xlsxFileName || "Upload Excel (.xlsx)"}
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {xlsxFileName
+                  ? truncateFileName(xlsxFileName)
+                  : "Upload Excel (.xlsx)"}
+              </button>
+              <div className="text-sm">
+                Drop your Excel file here or click to browse
+              </div>
+              <div className="text-xs">supported formats: .xlsx, .csv</div>
+            </div>
           </div>
-        )}
-        {error && (
-          <div className="error">
-            <p>{error}</p>
+          <div className="h-[250px] bg-white border border-dotted rounded-lg border-gray-400 w-1/2 flex items-center justify-center">
+            <input
+              type="file"
+              ref={zipInputRef}
+              accept=".zip"
+              onChange={handleZipUpload}
+              style={{ display: "none" }}
+            />
           </div>
-        )}
-        {students.length > 0 && (
-          <div className="data-info">
-            <h3>Loaded {students.length} students</h3>
-            <p>
-              Click "Print ID Card" to generate a print preview for each student
-            </p>
-            <button onClick={handlePrintAll} className="btn-primary">
-              Print All ID Cards
-            </button>
-          </div>
-        )}
+        </div>
       </div>
-      <div className="cards-grid">
-        {students.map((student, index) => (
-          <IdCard
-            key={index}
-            student={student}
-            handlePrintTrigger={handlePrintTrigger}
-          />
-        ))}
-      </div>
-      {students.length === 0 &&
-        !loading &&
-        !error &&
-        !xlsxFileName &&
-        !zipFileName && (
-          <div className="no-data">
-            <p>
-              No student data loaded. Please upload the Excel and ZIP files to
-              get started.
-            </p>
+      <div className="rounded-lg p-4 bg-gray-200 space-y-2">
+        <div className="font-semibold">Current Uploads</div>
+        <div className="flex items-center justify-around">
+          <div className="flex flex-col gap-1 items-center">
+            <div>{}</div>
           </div>
-        )}
-      {students.length === 0 &&
-        (xlsxFileName || zipFileName) &&
-        !loading &&
-        !error && (
-          <div className="no-data">
-            <p>
-              No valid student data found in the uploaded files. Please check
-              the formats.
-            </p>
-          </div>
-        )}
-      <div>
-        {selectedStudent && (
-          <div className="id-card-main" ref={componentRef}>
-            <NewIdCard student={selectedStudent} />
-          </div>
-        )}
+        </div>
       </div>
     </div>
+    // <div className="id-card-list">
+    //   <div className="list-header ">
+    //     <h2>Student ID Card Generator</h2>
+    //     <div className="file-upload-section">
+    //       <input
+    //         type="file"
+    //         ref={xlsxInputRef}
+    //         accept=".xlsx"
+    //         onChange={handleXlsxUpload}
+    //         style={{ display: "none" }}
+    //       />
+    //       <input
+    //         type="file"
+    //         ref={zipInputRef}
+    //         accept=".zip"
+    //         onChange={handleZipUpload}
+    //         style={{ display: "none" }}
+    //       />
+    //       <div className="file-actions">
+    //         <button
+    //           onClick={() => xlsxInputRef.current.click()}
+    //           className="btn-secondary file-btn"
+    //           title={xlsxFileName || "Upload Excel (.xlsx)"}
+    //           style={{
+    //             maxWidth: 180,
+    //             overflow: "hidden",
+    //             textOverflow: "ellipsis",
+    //             whiteSpace: "nowrap",
+    //           }}
+    //         >
+    //           {xlsxFileName
+    //             ? truncateFileName(xlsxFileName)
+    //             : "Upload Excel (.xlsx)"}
+    //         </button>
+    //         <button
+    //           onClick={() => zipInputRef.current.click()}
+    //           className="btn-secondary file-btn"
+    //           title={zipFileName || "Upload Zip (.zip)"}
+    //           style={{
+    //             maxWidth: 180,
+    //             overflow: "hidden",
+    //             textOverflow: "ellipsis",
+    //             whiteSpace: "nowrap",
+    //           }}
+    //         >
+    //           {zipFileName
+    //             ? truncateFileName(zipFileName)
+    //             : "Upload Zip (.zip)"}
+    //         </button>
+    //         <button onClick={clearData} className="btn-secondary">
+    //           Clear Data
+    //         </button>
+    //       </div>
+    //     </div>
+    //     {loading && (
+    //       <div className="loading">
+    //         <p>Processing files...</p>
+    //       </div>
+    //     )}
+    //     {error && (
+    //       <div className="error">
+    //         <p>{error}</p>
+    //       </div>
+    //     )}
+    //     {students.length > 0 && (
+    //       <div className="data-info">
+    //         <h3>Loaded {students.length} students</h3>
+    //         <p>
+    //           Click "Print ID Card" to generate a print preview for each student
+    //         </p>
+    //         <button onClick={handlePrintAll} className="btn-primary">
+    //           Print All ID Cards
+    //         </button>
+    //       </div>
+    //     )}
+    //   </div>
+    //   <div className="cards-grid">
+    //     {students.map((student, index) => (
+    //       <IdCard
+    //         key={index}
+    //         student={student}
+    //         handlePrintTrigger={handlePrintTrigger}
+    //       />
+    //     ))}
+    //   </div>
+    //   {students.length === 0 &&
+    //     !loading &&
+    //     !error &&
+    //     !xlsxFileName &&
+    //     !zipFileName && (
+    //       <div className="no-data">
+    //         <p>
+    //           No student data loaded. Please upload the Excel and ZIP files to
+    //           get started.
+    //         </p>
+    //       </div>
+    //     )}
+    //   {students.length === 0 &&
+    //     (xlsxFileName || zipFileName) &&
+    //     !loading &&
+    //     !error && (
+    //       <div className="no-data">
+    //         <p>
+    //           No valid student data found in the uploaded files. Please check
+    //           the formats.
+    //         </p>
+    //       </div>
+    //     )}
+    //   <div>
+    //     {selectedStudent && (
+    //       <div className="id-card-main" ref={componentRef}>
+    //         <NewIdCard student={selectedStudent} />
+    //       </div>
+    //     )}
+    //   </div>
+    // </div>
   );
 };
 export default IdCardList;
