@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import IdCardList from "./components/IdCardList";
+import Template from "./components/template";
 
 function App() {
   return (
@@ -16,8 +17,8 @@ function App() {
         </div>
         <div>Powered by Synthlane</div>
       </header>
-      <main>
-        
+      <main className="flex flex-col gap-10">
+        <Template />
         <IdCardList />
       </main>
       <footer></footer>
