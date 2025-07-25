@@ -30,15 +30,15 @@ const RsideArticle = () => {
     ];
 
     return (
-        <div className="bg-gray-100 flex items-center justify-center w-full h-full">
+        <div className="bg-gray-100 flex items-center justify-center w-full h-full shadow-xl">
             <div
-                className="w-full h-full overflow-y-auto rounded-2xl px-4 py-4 shadow-xl"
-                style={{ backgroundColor: 'rgba(59, 62, 145, 1)' }}
+                className="w-full h-full overflow-y-auto rounded-2xl px-4 py-4"
+                style={{ backgroundColor: 'rgba(59, 65, 145, 1)' }}
             >
-                <div className="relative space-y-2.5 mt-4 flex-col p-5">
+                <div className="relative space-y-2.5 mt-4 flex-col p-3">
                     {/* Vertical connecting line */}
                     <div
-                        className="absolute left-[37px] top-8  bottom-4 w-0.5 -translate-x-0.5"
+                        className="absolute left-[30px] top-8  bottom-4 w-0.5 -translate-x-0.5"
                         style={{ backgroundColor: '#BBA170' }}
                     ></div>
                     {steps.map((step) => (

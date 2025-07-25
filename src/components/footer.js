@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 
 const FooterSection = () => {
     return (
-        <div className="bg-footer-content w-[1440px] h-[417px] rounded-lgs p-4 mx-auto">
+        <div className="bg-footer-content w-[1440px] h-[200px] rounded-lgs p-4 mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                 {/* Left side - Logo and description */}
                 <div className="space-y-6 lg:space-y-8">
