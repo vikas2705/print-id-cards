@@ -302,7 +302,7 @@ const IdCardList = () => {
   const messageToShow = getMessageToShow();
 
   return (
-    <div className="flex flex-col gap-8 p-6">
+    <div className="flex flex-col gap-8 ">
       {/* Upload Data Section */}
       <div className="rounded-lg p-4 bg-gray-200 space-y-4 shadow-lg">
         <div className="flex items-center justify-between">

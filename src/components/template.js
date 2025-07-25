@@ -2,20 +2,28 @@ import React, { useRef, useState } from "react";
 
 const Template = () => {
     return (
-        <div className="flex flex-col gap-10 shadow-xl">
-            <div className="rounded-lg p-4 bg-[#C5C4C4] space-y-2 flex flex-col gap-4 ">
+        // <div className=" rounded-lg flex flex-col shadow-xl h-[422px] bg-[#E6E7EC]">
+            <div className="p-4  space-y-2 flex flex-col gap-4 shadow-xl rounded-lg bg-[#E6E7EC] h-[422px] w-[1031px]" >
                 <div className="flex items-center justify-between ">
-                    <div className="font-semibold flex w-full items-center justify-center">TEMPLATE PREVIEW</div>
+                    <div className="font-semibold pl-4 text-[#132963]">TEMPLATE PREVIEW</div>
+                    <div className="flex items-center bg-[#132963] rounded-full justify-between gap-2 pl-5 pr-4 w-[125px] h-[39px] p-2">
+                        <div className="text-[#E5E5E5]">Student</div>
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="8" viewBox="0 0 13 8" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.281071 0.645131C0.452842 0.479869 0.683198 0.389564 0.921518 0.394061C1.15984 0.398557 1.38662 0.497488 1.55204 0.669112L6.00042 5.39088L10.4488 0.669112C10.5297 0.579971 10.6276 0.507967 10.7368 0.457367C10.846 0.406767 10.9642 0.3786 11.0845 0.374536C11.2048 0.370472 11.3247 0.390593 11.437 0.433707C11.5494 0.476821 11.652 0.542051 11.7387 0.625531C11.8253 0.709011 11.8944 0.809043 11.9417 0.919699C11.989 1.03036 12.0137 1.14939 12.0141 1.26974C12.0146 1.39008 11.9909 1.5093 11.9445 1.62033C11.898 1.73136 11.8298 1.83194 11.7438 1.9161L6.6479 7.31172C6.56401 7.39875 6.46344 7.46798 6.35219 7.51526C6.24094 7.56254 6.1213 7.58692 6.00042 7.58692C5.87954 7.58692 5.75991 7.56254 5.64866 7.51526C5.53741 7.46798 5.43684 7.39875 5.35295 7.31172L0.25709 1.9161C0.0918282 1.74433 0.00152299 1.51397 0.0060196 1.27565C0.0105162 1.03733 0.109447 0.810546 0.281071 0.645131Z" fill="white" />
+                        </svg>
+                    
+                    </div>
                 </div>
 
                 {/* Cards Container */}
                 <div className="flex justify-center gap-20">
                     {/* First Card */}
-                    <div className="bg-[#D9D9D9] w-[410px] h-[268px] rounded-lg p-2 overflow-hidden flex flex-col items-start">
+                    <div className="bg-[#F9FAFB] w-[410px] h-[268px] rounded-lg p-2 overflow-hidden flex flex-col items-start">
                         {/* Logo and Title */}
                         <div className="flex p-4 items-start w-full gap-6">
                             {/* LOGO */}
-                            <div className="flex items-center gap-2 rounded-full bg-[#525252] w-16 h-16 justify-center">
+                            <div className="flex items-center gap-2 rounded-full bg-[#132963] w-16 h-16 justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none">
                                     <g clip-path="url(#clip0_159_1133)">
                                         <path d="M15.0007 1.5C14.621 1.5 14.246 1.56562 13.8898 1.69219L0.741347 6.44062C0.296034 6.60469 0.000721513 7.02656 0.000721513 7.5C0.000721513 7.97344 0.296034 8.39531 0.741347 8.55938L3.45541 9.53906C2.68666 10.7484 2.25072 12.1781 2.25072 13.6828V15C2.25072 16.3313 1.74447 17.7047 1.20541 18.7875C0.900722 19.3969 0.553847 19.9969 0.150722 20.55C0.000721514 20.7516 -0.041466 21.0141 0.042909 21.2531C0.127284 21.4922 0.324159 21.6703 0.567909 21.7313L3.56791 22.4813C3.76478 22.5328 3.97572 22.4953 4.14916 22.3875C4.3226 22.2797 4.44447 22.1016 4.48197 21.9C4.8851 19.8938 4.68353 18.0938 4.38353 16.8047C4.23353 16.1391 4.03197 15.4594 3.75072 14.8359V13.6828C3.75072 12.2672 4.22885 10.9312 5.05853 9.8625C5.66322 9.13594 6.44603 8.55 7.36478 8.18906L14.7242 5.29688C15.1085 5.14687 15.5445 5.33437 15.6945 5.71875C15.8445 6.10313 15.657 6.53906 15.2726 6.68906L7.91322 9.58125C7.33197 9.81094 6.82103 10.1625 6.40385 10.5938L13.8851 13.2938C14.2413 13.4203 14.6163 13.4859 14.996 13.4859C15.3757 13.4859 15.7507 13.4203 16.107 13.2938L29.2601 8.55938C29.7054 8.4 30.0007 7.97344 30.0007 7.5C30.0007 7.02656 29.7054 6.60469 29.2601 6.44062L16.1117 1.69219C15.7554 1.56562 15.3804 1.5 15.0007 1.5ZM6.00072 19.125C6.00072 20.7797 10.032 22.5 15.0007 22.5C19.9695 22.5 24.0007 20.7797 24.0007 19.125L23.2835 12.3094L16.6179 14.7188C16.0976 14.9062 15.5492 15 15.0007 15C14.4523 15 13.8992 14.9062 13.3835 14.7188L6.71791 12.3094L6.00072 19.125Z" fill="white" />
@@ -28,8 +36,8 @@ const Template = () => {
                                 </svg>
                             </div>
                             <div className="flex-wrap flex flex-col">
-                                <div className="text-[14px] ">SHRI LAL BHADUR SHASTRI</div>
-                                <div className="text-[14px]">NATIONAL SANSKRIT UNIVERSITY</div>
+                                <div className="text-[14px] text-[#132963] ">SHRI LAL BHADUR SHASTRI</div>
+                                <div className="text-[14px] text-[#132963]">NATIONAL SANSKRIT UNIVERSITY</div>
                                 <div className="text-[12px] text-[#525252]">(Central University, Govt. of India)</div>
                             </div>
                         </div>
@@ -37,7 +45,7 @@ const Template = () => {
                         <div className="flex pl-4 items-start w-full gap-2">
                             {/* PHOTO and DOB+BloodGroup */}
                             <div className="flex flex-col gap-2">
-                                <div className="w-[130px] h-[115px] rounded-lg bg-[#A3A3A3] flex place-items-center justify-center">
+                                <div className="w-[130px] h-[115px] rounded-lg bg-[#C8CFE7] flex place-items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="47" height="45" viewBox="0 0 47 45" fill="none">
                                         <g clip-path="url(#clip0_159_1100)">
                                             <g clip-path="url(#clip1_159_1100)">
@@ -92,10 +100,10 @@ const Template = () => {
                     </div>
 
                     {/* Second Card */}
-                    <div className="bg-[#D9D9D9] w-[410px] h-[268px] rounded-lg p-4 flex flex-col items-center gap-2">
+                    <div className="bg-[#F9FAFB] w-[410px] h-[268px] rounded-lg p-4 flex flex-col items-center gap-2">
                         {/* Content for the second card */}
                         {/* BARCODE CONTAINER */}
-                        <div className="bg-[#525252] w-[348px] h-[64px] rounded-lg flex items-center justify-center">
+                        <div className="bg-[#C8CFE7] w-[348px] h-[64px] rounded-lg flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="80" height="32" viewBox="0 0 80 32" fill="none">
                                 {/* <path d="M80 32H0V0H80V32Z" stroke="#E5E7EB" /> */}
                                 <path d="M4 32H0V0H4V32Z" fill="white" />
@@ -120,7 +128,7 @@ const Template = () => {
                         <div className="text-[#525252] text-[12px]">
                             *123456789012*
                         </div>
-                        <div className="bg-white w-[348px] h-[142px] p-4 flex flex-col rounded-sm">
+                        <div className="bg-white w-[348px] h-[142px] p-4 flex flex-col border rounded-sm">
                             <p className="text-[14px] mb-2">If found, please return to:</p>
                             <p className="text-[12px]">Shri Lal Bahadur Shastri National</p>
                             <p className="text-[12px]">Sanskrit University</p>
@@ -130,19 +138,8 @@ const Template = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex w-full items-center justify-center">
-                    <div className="flex items-center bg-white rounded-full justify-between gap-2 pl-5 pr-4 w-[125px] h-[39px] p-2">
-                        <div>Student</div>
-                        
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="8" viewBox="0 0 13 8" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.281071 0.645131C0.452842 0.479869 0.683198 0.389564 0.921518 0.394061C1.15984 0.398557 1.38662 0.497488 1.55204 0.669112L6.00042 5.39088L10.4488 0.669112C10.5297 0.579971 10.6276 0.507967 10.7368 0.457367C10.846 0.406767 10.9642 0.3786 11.0845 0.374536C11.2048 0.370472 11.3247 0.390593 11.437 0.433707C11.5494 0.476821 11.652 0.542051 11.7387 0.625531C11.8253 0.709011 11.8944 0.809043 11.9417 0.919699C11.989 1.03036 12.0137 1.14939 12.0141 1.26974C12.0146 1.39008 11.9909 1.5093 11.9445 1.62033C11.898 1.73136 11.8298 1.83194 11.7438 1.9161L6.6479 7.31172C6.56401 7.39875 6.46344 7.46798 6.35219 7.51526C6.24094 7.56254 6.1213 7.58692 6.00042 7.58692C5.87954 7.58692 5.75991 7.56254 5.64866 7.51526C5.53741 7.46798 5.43684 7.39875 5.35295 7.31172L0.25709 1.9161C0.0918282 1.74433 0.00152299 1.51397 0.0060196 1.27565C0.0105162 1.03733 0.109447 0.810546 0.281071 0.645131Z" fill="black" />
-                        </svg>
-                    
-                    </div>
-                    
-                </div>
             </div>
-        </div>
+        // </div>
     );
 };
 

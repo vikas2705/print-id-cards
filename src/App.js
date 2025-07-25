@@ -18,8 +18,17 @@ function App() {
         </div>
         <div>Powered by Synthlane</div>
       </header>
-      <main className="flex flex-col gap-10">
-        <Template />
+      <main className="flex flex-col w-full gap-10">
+        <div className="w-full flex gap-2">
+          <div className="w-[80%]">
+
+            <Template />
+
+          </div>
+          <div className="w-[20%] bg-white rounded-lg h-24">
+
+          </div>
+        </div>
         <IdCardList />
       </main>
       <footer></footer>
