@@ -5,12 +5,12 @@ const FooterSection = () => {
         <div className="bg-footer-content w-[1440px] h-[200px] rounded-lgs p-4 mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                 {/* Left side - Logo and description */}
-                <div className="space-y-6 lg:space-y-8">
+                <div className="space-y-6 lg:space-y-10">
                     <div className="flex items-center space-x-3">
                         <img src="/SynthlaneLogo.png" alt="Synthlane Logo" className="h-12 w-auto" />
                     </div>
 
-                    <p className="text-[#132963] text-footer-text leading-relaxed text-sm lg:text-base max-w-md">
+                    <p className="text-[#132963] text-footer-text leading-relaxed text-sm lg:text-base max-w-[270px]">
                         Synthlane is a consulting company which offers sophisticated end-to-end AI enabled technical solutions for  public and private sector needs.
                     </p>
 
