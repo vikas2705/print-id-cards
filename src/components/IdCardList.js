@@ -10,7 +10,7 @@ import NewIdCard from "./NewIdCard";
 import ClearIcon from "../assets/ClearIcon.svg";
 import UploadIcon from "../assets/UploadIcon.svg";
 import PrinterIcon from "../assets/PrinterIcon.svg";
-import SearchIcon from "../assets/Search.svg";
+import SearchIcon from "./../assets/Search.svg";
 
 // IndexedDB utility functions
 const dbPromise = openDB("StudentFilesDB", 1, {
@@ -195,6 +195,12 @@ const IdCardList = () => {
     setLoading(false);
   };
 
+  // Calculate total records and generated cards
+  const totalRecords = students.length;
+  const generatedCards = students.filter((student) => {
+    return student.Name && student.formNumber && student.photo && student.sign;
+  }).length;
+
   const clearData = () => {
     setStudents([]);
     setExcelData([]);
@@ -212,11 +218,19 @@ const IdCardList = () => {
   };
 
   const handlePrintAll = () => {
-    students.forEach((student, index) => {
-      setTimeout(() => {
-        setSelectedStudent({ ...student });
-        handlePrint();
-      }, index * 1000);
+    const cardsToPrint =
+      selectedCards.length > 0
+        ? selectedCards
+        : filteredStudents.map((student) => student.formNumber);
+
+    cardsToPrint.forEach((cardId, index) => {
+      const student = students.find((s) => s.formNumber === cardId);
+      if (student) {
+        setTimeout(() => {
+          setSelectedStudent({ ...student });
+          handlePrint();
+        }, index * 1000);
+      }
     });
   };
 
@@ -225,10 +239,17 @@ const IdCardList = () => {
     const searchLower = searchTerm.toLowerCase();
     const name = (student.Name || "").toLowerCase();
     const enrollmentNo = (student["Enrollment No"] || "").toLowerCase();
-    return name.includes(searchLower) || enrollmentNo.includes(searchLower);
+    const formNumber = (student["Form Number"] || "").toLowerCase();
+    const registrationId = (student.formNumber || "").toLowerCase();
+
+    return (
+      name.includes(searchLower) ||
+      enrollmentNo.includes(searchLower) ||
+      formNumber.includes(searchLower) ||
+      registrationId.includes(searchLower)
+    );
   });
 
-  // Card selection logic
   const handleSelectCard = (studentId) => {
     setSelectedCards((prev) =>
       prev.includes(studentId)
@@ -245,10 +266,39 @@ const IdCardList = () => {
     }
   };
 
+  const getMessageToShow = () => {
+    if (!xlsxFileName && !zipFileName) {
+      return {
+        message:
+          "No files uploaded yet. Please upload Excel and Zip files to get started.",
+        type: "info",
+      };
+    }
+
+    if (students.length === 0) {
+      return {
+        message:
+          "No valid student data found in the uploaded files. Please check the formats.",
+        type: "warning",
+      };
+    }
+
+    if (filteredStudents.length === 0 && searchTerm) {
+      return {
+        message: "No cards match your search criteria.",
+        type: "search",
+      };
+    }
+
+    return null;
+  };
+
+  const messageToShow = getMessageToShow();
+
   return (
     <div className="flex flex-col gap-8 p-6">
       {/* Upload Data Section */}
-      <div className="rounded-lg p-4 bg-gray-200 space-y-4">
+      <div className="rounded-lg p-4 bg-gray-200 space-y-4 shadow-lg">
         <div className="flex items-center justify-between">
           <div className="font-semibold text-lg">Upload Data</div>
           <button
@@ -271,7 +321,7 @@ const IdCardList = () => {
               <input
                 type="file"
                 ref={xlsxInputRef}
-                accept=".xlsx"
+                accept=".xlsx,.xls,.csv"
                 onChange={handleXlsxUpload}
                 style={{ display: "none" }}
               />
@@ -281,7 +331,7 @@ const IdCardList = () => {
                   : "Drop your Excel file here or click to browse"}
               </div>
               <div className="text-sm text-gray-600">
-                Supported formats: .xlsx
+                Supported formats: .xls, .xlsx, .csv
               </div>
             </div>
           </div>
@@ -314,27 +364,27 @@ const IdCardList = () => {
       </div>
 
       {/* Current Uploads Section */}
-      <div className="rounded-lg p-4 bg-gray-200 space-y-2">
+      <div className="rounded-lg p-4 bg-gray-200 space-y-2 shadow-lg">
         <div className="font-semibold text-lg">Current Uploads</div>
         <div className="flex items-center justify-around">
           <div className="flex flex-col gap-1 items-center">
-            <div className="text-xl font-semibold">{students.length}</div>
+            <div className="text-xl font-semibold">{totalRecords}</div>
             <div className="text-sm text-gray-600">Total records</div>
           </div>
           <div className="flex flex-col gap-1 items-center">
-            <div className="text-xl font-semibold">{students.length}</div>
+            <div className="text-xl font-semibold">{generatedCards}</div>
             <div className="text-sm text-gray-600">Generated cards</div>
           </div>
         </div>
       </div>
 
-      {/* Generated Cards Section */}
-      <div className="rounded-lg bg-gray-200 space-y-4">
-        <div className="px-4 py-3 flex items-center justify-between">
+      {/* Generated Cards Header Section */}
+      <div className="rounded-lg bg-gray-200 p-4 shadow-lg">
+        <div className="flex items-center justify-between">
           <div className="font-bold text-lg">
-            Generated Cards ({students.length})
+            Generated Cards ({generatedCards})
           </div>
-          <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 w-[360px]">
+          <div className="flex items-center gap-2 bg-white rounded-full px-5 py-2 w-[360px]">
             <img src={SearchIcon} alt="search" width={16} height={16} />
             <input
               type="text"
@@ -357,32 +407,50 @@ const IdCardList = () => {
               className="flex items-center gap-2 bg-gray-600 text-white rounded-lg px-4 py-2 hover:bg-gray-700 transition-colors"
             >
               <img src={PrinterIcon} alt="print" width={16} height={16} />
-              <span>Print</span>
+              <span>
+                {selectedCards.length > 0
+                  ? `Print (${selectedCards.length})`
+                  : filteredStudents.length > 0
+                  ? `Print All (${filteredStudents.length})`
+                  : "Print"}
+              </span>
             </button>
           </div>
         </div>
-
-        {/* Cards Grid */}
-        <div className="px-4 pb-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredStudents.map((student, index) => (
-              <IdCard
-                key={index}
-                student={student}
-                handlePrintTrigger={handlePrintTrigger}
-                isSelected={selectedCards.includes(student.formNumber)}
-                onSelect={() => handleSelectCard(student.formNumber)}
-              />
-            ))}
-          </div>
-
-          {filteredStudents.length === 0 && students.length > 0 && (
-            <div className="text-center py-8 text-gray-500">
-              No cards match your search criteria.
-            </div>
-          )}
-        </div>
       </div>
+
+      {messageToShow ? (
+        <div className="h-64 flex items-center justify-center">
+          <div
+            className={`text-center py-8 px-6 rounded-lg shadow-lg ${
+              messageToShow.type === "info"
+                ? "bg-blue-50 text-blue-700 border border-blue-200"
+                : messageToShow.type === "warning"
+                ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
+                : "bg-gray-50 text-gray-500 border border-gray-200"
+            }`}
+          >
+            <div className="text-lg font-medium mb-2">
+              {messageToShow.type === "info" && "📁 No Files Uploaded"}
+              {messageToShow.type === "warning" && "⚠️ No Data Found"}
+              {messageToShow.type === "search" && "🔍 No Results"}
+            </div>
+            <div className="text-sm">{messageToShow.message}</div>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredStudents.map((student, index) => (
+            <IdCard
+              key={index}
+              student={student}
+              handlePrintTrigger={handlePrintTrigger}
+              isSelected={selectedCards.includes(student.formNumber)}
+              onSelect={() => handleSelectCard(student.formNumber)}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Hidden print component */}
       <div style={{ display: "none" }}>

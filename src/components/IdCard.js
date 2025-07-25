@@ -5,7 +5,10 @@ import PrinterBlackIcon from "../assets/PrinterBlack.svg";
 
 const IdCard = ({ student, handlePrintTrigger, isSelected, onSelect }) => {
   return (
-    <div className="bg-gray-500 rounded-lg shadow-lg overflow-hidden border border-gray-200 p-6 flex flex-col items-center gap-4">
+    <div
+      className="bg-gray-500 rounded-lg shadow-lg overflow-hidden border border-gray-200 p-6 flex flex-col items-center gap-4"
+      onClick={onSelect}
+    >
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center">
           <input

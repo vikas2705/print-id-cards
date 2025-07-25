@@ -41,7 +41,7 @@ const NewIdCard = ({ student }) => {
             alt="University Logo"
             className="w-[55px] h-[50px]"
           />
-          <div className="flex flex-col font-medium">
+          <div className="flex flex-col text-center font-medium">
             <div className="text-[10px] font-medium text-red-600 leading-tight tracking-wider">
               श्री लाल बहादुर शास्त्री राष्ट्रीय संस्कृत विश्वविद्यालय
             </div>
