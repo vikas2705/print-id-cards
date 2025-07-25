@@ -37,8 +37,6 @@ const IdCardList = () => {
   const [selectedStudent, setSelectedStudent] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [fileName, setFileName] = useState("");
-  const [isDragOver, setIsDragOver] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCards, setSelectedCards] = useState([]);
   const componentRef = useRef(null);
@@ -259,10 +257,18 @@ const IdCardList = () => {
   };
 
   const handleSelectAll = () => {
-    if (selectedCards.length === filteredStudents.length) {
+    // Get only the generated cards from filtered students
+    const generatedFilteredStudents = filteredStudents.filter(
+      (student) =>
+        student.Name && student.formNumber && student.photo && student.sign
+    );
+
+    if (selectedCards.length === generatedFilteredStudents.length) {
       setSelectedCards([]);
     } else {
-      setSelectedCards(filteredStudents.map((student) => student.formNumber));
+      setSelectedCards(
+        generatedFilteredStudents.map((student) => student.formNumber)
+      );
     }
   };
 
@@ -388,7 +394,7 @@ const IdCardList = () => {
             <img src={SearchIcon} alt="search" width={16} height={16} />
             <input
               type="text"
-              placeholder="Search by name or enrollment number..."
+              placeholder="Search by name or registration number..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="focus:outline-none w-full"
@@ -399,20 +405,49 @@ const IdCardList = () => {
               onClick={handleSelectAll}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
             >
-              Select All
+              {(() => {
+                const generatedFilteredStudents = filteredStudents.filter(
+                  (student) =>
+                    student.Name &&
+                    student.formNumber &&
+                    student.photo &&
+                    student.sign
+                );
+                return selectedCards.length ===
+                  generatedFilteredStudents.length &&
+                  generatedFilteredStudents.length > 0
+                  ? "Deselect All"
+                  : "Select All";
+              })()}
             </button>
 
             <button
               onClick={handlePrintAll}
-              className="flex items-center gap-2 bg-gray-600 text-white rounded-lg px-4 py-2 hover:bg-gray-700 transition-colors"
+              disabled={selectedCards.length === 0}
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 transition-colors ${
+                selectedCards.length === 0
+                  ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  : "bg-gray-600 text-white hover:bg-gray-700"
+              }`}
             >
               <img src={PrinterIcon} alt="print" width={16} height={16} />
               <span>
-                {selectedCards.length > 0
-                  ? `Print (${selectedCards.length})`
-                  : filteredStudents.length > 0
-                  ? `Print All (${filteredStudents.length})`
-                  : "Print"}
+                {(() => {
+                  const generatedFilteredStudents = filteredStudents.filter(
+                    (student) =>
+                      student.Name &&
+                      student.formNumber &&
+                      student.photo &&
+                      student.sign
+                  );
+                  return selectedCards.length ===
+                    generatedFilteredStudents.length &&
+                    generatedFilteredStudents.length > 0
+                    ? `Print All (${generatedFilteredStudents.length})`
+                    : selectedCards.length > 0
+                    ? `Print (${selectedCards.length})`
+                    : "Print";
+                })()}
               </span>
             </button>
           </div>
