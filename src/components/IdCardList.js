@@ -35,12 +35,15 @@ const IdCardList = () => {
   const [students, setStudents] = useState([]);
   const [excelData, setExcelData] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState();
+  const [selectedStudentsForPrint, setSelectedStudentsForPrint] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCards, setSelectedCards] = useState([]);
   const componentRef = useRef(null);
+  const bulkComponentRef = useRef(null);
   const onBeforeGetContentResolve = useRef(null);
+  const onBeforeGetContentResolveBulk = useRef(null);
   const xlsxInputRef = useRef(null);
   const zipInputRef = useRef(null);
   const [xlsxFileName, setXlsxFileName] = useState("");
@@ -55,9 +58,24 @@ const IdCardList = () => {
     }
   }, [selectedStudent]);
 
+  useEffect(() => {
+    if (
+      selectedStudentsForPrint &&
+      typeof onBeforeGetContentResolveBulk.current === "function"
+    ) {
+      onBeforeGetContentResolveBulk.current();
+    }
+  }, [selectedStudentsForPrint]);
+
   const handleOnBeforeGetContent = useCallback((student) => {
     return new Promise((resolve) => {
       onBeforeGetContentResolve.current = resolve;
+    });
+  }, []);
+
+  const handleOnBeforeGetContentBulk = useCallback((students) => {
+    return new Promise((resolve) => {
+      onBeforeGetContentResolveBulk.current = resolve;
     });
   }, []);
 
@@ -221,16 +239,29 @@ const IdCardList = () => {
         ? selectedCards
         : filteredStudents.map((student) => student.formNumber);
 
-    cardsToPrint.forEach((cardId, index) => {
-      const student = students.find((s) => s.formNumber === cardId);
-      if (student) {
-        setTimeout(() => {
-          setSelectedStudent({ ...student });
-          handlePrint();
-        }, index * 1000);
-      }
-    });
+    const studentsToPrint = students.filter((student) =>
+      cardsToPrint.includes(student.formNumber)
+    );
+
+    setSelectedStudentsForPrint(studentsToPrint);
+    handlePrintAllCards();
   };
+
+  const handlePrintAllCards = useReactToPrint({
+    content: () => bulkComponentRef.current,
+    documentTitle: "ID Cards - Bulk Print",
+    onBeforeGetContent: handleOnBeforeGetContentBulk,
+    onAfterPrint: () => {
+      onBeforeGetContentResolveBulk.current = null;
+      setSelectedStudentsForPrint([]);
+    },
+    pageStyle: `@media print {
+      @page {
+        size: 7cm 4.22cm;
+        margin: 0;
+      }
+    }`,
+  });
 
   // Search functionality
   const filteredStudents = students.filter((student) => {
@@ -487,6 +518,15 @@ const IdCardList = () => {
         {selectedStudent && (
           <div className="id-card-main" ref={componentRef}>
             <NewIdCard student={selectedStudent} />
+          </div>
+        )}
+        {selectedStudentsForPrint.length > 0 && (
+          <div className="id-cards-bulk-print" ref={bulkComponentRef}>
+              {selectedStudentsForPrint.map((student, index) => (
+                <div key={index} style={{ pageBreakInside: 'avoid' }}>
+                  <NewIdCard student={student} />
+                </div>
+              ))}
           </div>
         )}
       </div>
