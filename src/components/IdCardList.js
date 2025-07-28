@@ -279,7 +279,7 @@ const IdCardList = () => {
     );
   });
 
-  const handleSelectCard = (studentId) => {
+  const handleSelectCard = (e,studentId) => {
     setSelectedCards((prev) =>
       prev.includes(studentId)
         ? prev.filter((id) => id !== studentId)
@@ -503,7 +503,7 @@ const IdCardList = () => {
                       student={student}
                       handlePrintTrigger={handlePrintTrigger}
                       isSelected={selectedCards.includes(student.formNumber)}
-                      onSelect={() => handleSelectCard(student.formNumber)}
+                      onSelect={(e) => handleSelectCard(e,student.formNumber)}
                     />
                   ))}
                 </div>
