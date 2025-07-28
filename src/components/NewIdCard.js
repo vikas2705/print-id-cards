@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import JsBarcode from "jsbarcode";
 
-const NewIdCard = ({ student }) => {
+const NewIdCard = ({ student, showinRow }) => {
   const barcodeRef = useRef(null);
 
   const getDummyImage = (formNo) => {
@@ -32,7 +32,7 @@ const NewIdCard = ({ student }) => {
   }, [student]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex gap-2 ${showinRow ? "flex-row" : "flex-col"}`} style={{ transform: showinRow ? "scale(1.4)" : "" }}>
       {/* Front Side of ID Card */}
       <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col px-1 rounded-xl">
         <div className="flex items-center p-2 border-b-2 border-b-blue-800 h-1/3">

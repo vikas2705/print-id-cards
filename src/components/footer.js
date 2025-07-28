@@ -20,7 +20,7 @@ const FooterSection = () => {
                 </div>
 
                 {/* Right side - Contact information */}
-                <div className="ml-[100px] space-y-6 lg:space-y-8 w-[500px] h-[286px]">
+                <div className="ml-[100px] space-y-6 lg:space-y-8 w-[500px]">
                     <h3 className="text-lg lg:text-xl font-semibold text-footer-title">Contact Information</h3>
 
                     <div className="space-y-6">
