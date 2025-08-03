@@ -13,11 +13,14 @@ const NewIdCard = ({ student, showinRow }) => {
     return `/signature/${formNo}_sign.jpg`;
   };
 
-  // function to generate barcode for registration number
+  // function to generate barcode for registration number and student name
   useEffect(() => {
     if (barcodeRef.current && student?.["Form Number"]) {
       try {
-        JsBarcode(barcodeRef.current, student["Form Number"], {
+        // Combine form number and student name for barcode
+        const barcodeData = `${student?.Name || ""} | ${student["Form Number"]}`;
+
+        JsBarcode(barcodeRef.current, barcodeData, {
           format: "CODE128",
           width: 2,
           height: 25,
@@ -79,7 +82,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 {student?.["Form Number"] || ""}
               </div>
             </div>
-            <div className="text-center mt-1 place-self-center ">
+            <div className="text-center mt-1 place-self-center mr-16">
               <div className="text-[9px] font-semibold text-red-800 leading-3">
                 STUDENT ID CARD
               </div>
@@ -130,7 +133,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 </span>
                 <span>:</span>
                 <span className="mx-2.5 uppercase">
-                  {student?.programName || "--"} | {student?.courseCode || ""}
+                  {student?.programName || "--"}
                 </span>
               </div>
               <div className="flex items-start">
