@@ -13,6 +13,28 @@ const NewIdCard = ({ student, showinRow }) => {
     return `/signature/${formNo}_sign.jpg`;
   };
 
+  // Calculate session and valid upto date based on admission date
+  const getSessionAndValidUpto = () => {
+    let admissionYear = 2024; // Default fallback
+    
+    if (student?.admission_date) {
+      const admissionDate = new Date(student.admission_date);
+      admissionYear = admissionDate.getFullYear();
+    }
+    
+    // Session is typically 2 years, starting from admission year
+    const sessionStart = admissionYear;
+    const sessionEnd = admissionYear + 2;
+    const session = `${sessionStart}-${sessionEnd.toString().slice(-2)}`;
+    
+    // Valid upto is 31-July of the session end year
+    const validUpto = `31-July-${sessionEnd}`;
+    
+    return { session, validUpto };
+  };
+
+  const { session, validUpto } = getSessionAndValidUpto();
+
   // function to generate barcode for registration number and student name
   useEffect(() => {
     if (barcodeRef.current && student?.["Form Number"]) {
@@ -88,7 +110,7 @@ const NewIdCard = ({ student, showinRow }) => {
               </div>
               <div className="h-[0.5px] bg-red-800 w-[80px] self-center"></div>
               <div className="text-[8px] font-semibold text-red-800 italic leading-3">
-                Session (2024-26)
+                Session ({session})
               </div>
             </div>
             <div className="mt-0.5 mr-0.5">
@@ -183,11 +205,9 @@ const NewIdCard = ({ student, showinRow }) => {
         {/* Main Content */}
         <div className="pt-1 pl-2 pr-1 text-[8px] text-black flex-1 flex flex-col gap-[2.5px]">
           <div className="flex items-start">
-            <span className="min-w-[70px] max-w-[70px] text-start">
-              Permanent Address{" "}
-            </span>
+            <span className="min-w-[70px] max-w-[70px] text-start">Per. Address </span>
             <span>:</span>
-            <span className="mx-2 text-left">
+            <span className="mx-2 text-left line-clamp-2 overflow-hidden leading-tight">
               {student?.permanent_address
                 ? `${student?.permanent_address}`
                 : ""}
@@ -196,9 +216,7 @@ const NewIdCard = ({ student, showinRow }) => {
             </span>
           </div>
           <div className="flex items-start">
-            <span className="min-w-[70px] max-w-[70px] text-start">
-              Correspondence Address
-            </span>
+            <span className="min-w-[70px] max-w-[70px] text-start">Corr. Address</span>
             <span>:</span>
             <span className="mx-2 text-left">AS ABOVE</span>
           </div>
@@ -225,28 +243,25 @@ const NewIdCard = ({ student, showinRow }) => {
               </span>
               <span>:</span>
               <span className="mx-1">
-                {student?.admission_date || "26-06-2024"}
+                {student?.admission_date ? student.admission_date.split(' ')[0] : "26-06-2024"}
               </span>
             </div>
             {/* Validity Period */}
             <div className="bg-[#b0afae] pl-0.5 pr-2.5 py-1 rounded border-[0.5px] border-black text-[7px] font-bold text-black h-fit flex items-center gap-0.5">
               <div className="text-[7px]">Valid Upto:</div>
-              <div className="text-[7px] tracking-tighter">Session 2024-26</div>
+              <div className="text-[7px] tracking-tighter">{validUpto}</div>
             </div>
           </div>
           {/* Notes Section */}
           <div className="text-[8px] text-black flex items-start gap-1">
             <div className="">Note:</div>
             <div className="flex flex-col items-start italic">
-              <div>1. Notify Office / Police if card get lost.</div>
-              <div>
-                2. Deposit Rs.100/- in the office for re-issuing the card.
-              </div>
+              <div>To reissue the card, you must provide a copy of the police FIR and pay a reissuance fee of ₹100.</div>
             </div>
           </div>
           <div className="flex items-end w-full gap-1">
             <div className="flex-1 h-[0.6px] bg-black mb-1" />
-            <div className="font-bold w-fit text-[10px]">For Hostel Use</div>
+            <div className="font-bold w-fit text-[10px]">For Hostel Use (if applicable)</div>
             <div className="flex-1 h-[0.6px] bg-black mb-1" />
           </div>
 
@@ -267,8 +282,8 @@ const NewIdCard = ({ student, showinRow }) => {
         <div className="bg-[#6addee] text-center py-1 absolute bottom-0 left-0 w-full border-t border-black">
           <div className="text-[7px] font-medium">
             <div>B-4, Qutub Institutional Area, New Delhi-110016</div>
-            <div>Ph.: 011-46060606 (30 Lines) | Fax: 26533512, 26520255,</div>
-            <div>Email: info@slbsrsv.ac.in | www.slbsrsv.ac.in</div>
+            <div>Ph.: 011-46060606 (30 Lines) | Academic: 46060548, 46060503</div>
+            <div>Email: academic@slbsrsv.ac.in</div>
           </div>
         </div>
       </div>

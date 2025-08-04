@@ -21,6 +21,11 @@ code {
   box-sizing: border-box;
 }
 
+/* ID Card Footer Background */
+.id-card-footer-bg {
+  background-color: #6addee !important;
+}
+
 /* Ensure proper print behavior */
 @media print {
   body {
