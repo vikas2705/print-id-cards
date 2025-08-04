@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import JsBarcode from "jsbarcode";
+import APlusCertified from "../assets/APlusCertified.png";
 
 const NewIdCard = ({ student, showinRow }) => {
   const barcodeRef = useRef(null);
@@ -12,11 +13,14 @@ const NewIdCard = ({ student, showinRow }) => {
     return `/signature/${formNo}_sign.jpg`;
   };
 
-  // function to generate barcode for registration number
+  // function to generate barcode for registration number and student name
   useEffect(() => {
     if (barcodeRef.current && student?.["Form Number"]) {
       try {
-        JsBarcode(barcodeRef.current, student["Form Number"], {
+        // Combine form number and student name for barcode
+        const barcodeData = `${student?.Name || ""} | ${student["Form Number"]}`;
+
+        JsBarcode(barcodeRef.current, barcodeData, {
           format: "CODE128",
           width: 2,
           height: 25,
@@ -32,57 +36,63 @@ const NewIdCard = ({ student, showinRow }) => {
   }, [student]);
 
   return (
-    <div className={`flex gap-2 ${showinRow ? "flex-row" : "flex-col"}`} style={{ transform: showinRow ? "scale(1.4)" : "" }}>
+    <div
+      className={`flex gap-2 ${showinRow ? "flex-row" : "flex-col"}`}
+      style={{ transform: showinRow ? "scale(1.4)" : "" }}
+    >
       {/* Front Side of ID Card */}
       <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col px-1 rounded-xl">
-        <div className="flex items-center p-2 border-b-2 border-b-blue-800 h-1/3">
-          <img
-            src="https://slbsrsv.samarth.ac.in/uploads/uims/b8f484f38959e08ff58b9e1cc33e6e7b2a7c4267976468fe2582c247b3c5f7fb1_1642401054_72516497_logo.png"
-            alt="University Logo"
-            className="w-[55px] h-[50px]"
-          />
-          <div className="flex flex-col text-center font-medium">
-            <div className="text-[10px] font-medium text-red-600 leading-tight tracking-wider">
+        <div className="flex items-center px-2 py-[2px] border-b-2 border-b-blue-800 h-1/3">
+          <div className="flex items-center h-full">
+            <img
+              src="https://slbsrsv.samarth.ac.in/uploads/uims/b8f484f38959e08ff58b9e1cc33e6e7b2a7c4267976468fe2582c247b3c5f7fb1_1642401054_72516497_logo.png"
+              alt="University Logo"
+              className="w-[65px] h-full object-contain"
+            />
+          </div>
+
+          <div className="flex flex-col font-medium text-center ml-1">
+            <div className="text-[12px] font-medium text-red-600 leading-tight">
               श्री लाल बहादुर शास्त्री राष्ट्रीय संस्कृत विश्वविद्यालय
             </div>
-            <div className="text-[12px] text-blue-800 leading-3 px-6">
+            <div className="text-[12px] text-blue-800 leading-3 font-bold mr-4">
               SHRI LAL BAHADUR SHASTRI
             </div>
-            <div className="text-[12px] text-blue-800 leading-3 px-6">
+            <div className="text-[12px] text-blue-800 leading-3 font-bold mr-4">
               NATIONAL SANSKRIT UNIVERSITY
             </div>
-            <div className="text-[10px] text-red-600 leading-tight">
+            <div className="text-[8px] text-red-600 leading-tight mr-2">
               (A Central University)
             </div>
-            <div className="h-[1px] bg-blue-800 w-[100px] self-center"></div>
-            <div className="text-[10px] text-red-700 leading-tight">
+            <div className="h-[1px] bg-blue-800 w-[215px] self-center"></div>
+            <div className="text-[10px] text-red-700 leading-tight text-center">
               MINISTRY OF EDUCATION, GOVT. OF INDIA
             </div>
           </div>
         </div>
 
         {/* main content */}
-        <div className="pl-2 h-2/3 pb-[2px]">
+        <div className="pl-1 h-2/3 pb-[2px]">
           <div className="flex items-start justify-between mb-1 w-full">
-            <div className="flex flex-col items-start text-black font-semibold leading-3 mt-1">
+            <div className="flex items-center text-black font-semibold leading-3 mt-1 gap-0.5">
               <div className="text-red-600 font-semibold text-[10px]">
                 Reg.No.
               </div>
-              <div className="text-[7px] tracking-tighter">
+              <div className="text-[8px] tracking-tighter">
                 {student?.["Form Number"] || ""}
               </div>
             </div>
-            <div className="text-center mt-1 place-self-center ml-8">
+            <div className="text-center mt-1 place-self-center mr-16">
               <div className="text-[9px] font-semibold text-red-800 leading-3">
-                IDENTITY CARD
+                STUDENT ID CARD
               </div>
               <div className="h-[0.5px] bg-red-800 w-[80px] self-center"></div>
               <div className="text-[8px] font-semibold text-red-800 italic leading-3">
                 Session (2024-26)
               </div>
             </div>
-            <div className="text-[7px] font-medium text-black text-right italic">
-              Accredited 'A++' Grade by NAAC
+            <div className="mt-0.5 mr-0.5">
+              <img src={APlusCertified} alt="" height={24} width={24} />
             </div>
           </div>
           <div className="flex gap-2">
@@ -97,68 +107,72 @@ const NewIdCard = ({ student, showinRow }) => {
                   className="w-full h-full object-cover border border-gray-300"
                 />
               </div>
-
-              {/* Student Signature */}
-              <div className="flex flex-col items-center">
-                <img
-                  src={
-                    student?.sign || getDummySignature(student?.["Form Number"])
-                  }
-                  alt={`${student?.Name || "Student"} signature`}
-                  className="w-[35px] h-[20px] object-contain"
-                />
-                <div className="text-[7px] text-black text-center">
-                  (Student Signature)
-                </div>
+            </div>
+            <div className="flex flex-col items-start justify-between text-[8px] text-black] my-1">
+              <div className="flex items-start">
+                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                  NAME{" "}
+                </span>
+                <span>:</span>
+                <span className="mx-2.5 uppercase text-left">
+                  {student?.Name || ""}
+                </span>
+              </div>
+              <div className="flex items-start">
+                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                  F-NAME
+                </span>
+                <span>:</span>
+                <span className="mx-2.5 uppercase text-left">
+                  {student?.father_name || "--"}
+                </span>
+              </div>
+              <div className="flex items-start">
+                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                  CLASS
+                </span>
+                <span>:</span>
+                <span className="mx-2.5 uppercase">
+                  {student?.programName || "--"}
+                </span>
+              </div>
+              <div className="flex items-start">
+                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                  DOB
+                </span>
+                <span>:</span>
+                <span className="mx-2.5 uppercase">{student?.dob || "--"}</span>
               </div>
             </div>
-            <div className="text-[8px] text-black flex flex-col items-start justify-between gap-[2px] flex-1">
-              <div className="flex flex-col items-start justify-start gap-[2px]">
-                <div className="flex items-start mt-1">
-                  <span className="min-w-[40px] max-w-[40px] text-start font-bold">NAME </span>
-                  <span>:</span>
-                  <span className="mx-2.5 uppercase text-left">
-                    {student?.Name || ""}
-                  </span>
-                </div>
-                <div className="flex items-start">
-                  <span className="min-w-[40px] max-w-[40px] text-start font-bold">F-NAME</span>
-                  <span>:</span>
-                  <span className="mx-2.5 uppercase text-left">
-                    {student?.father_name || "--"}
-                  </span>
-                </div>
-                <div className="flex items-start">
-                  <span className="min-w-[40px] max-w-[40px] text-start font-bold">CLASS</span>
-                  <span>:</span>
-                  <span className="mx-2.5 uppercase">
-                    {student?.programName || "--"}
-                  </span>
-                </div>
-                <div className="flex items-start">
-                  <span className="min-w-[40px] max-w-[40px] text-start font-bold">DOB</span>
-                  <span>:</span>
-                  <span className="mx-2.5 uppercase">
-                    {student?.dob || "--"}
-                  </span>
-                </div>
+          </div>
+          <div className="flex items-center justify-between mt-1">
+            {/* Student Signature */}
+            <div className="flex flex-col items-center">
+              <img
+                src={
+                  student?.sign || getDummySignature(student?.["Form Number"])
+                }
+                alt={`${student?.Name || "Student"} signature`}
+                className="w-[65px] h-[20px] object-cover"
+              />
+              <div className="text-[7px] text-black text-center">
+                (Student Signature)
               </div>
-              <div className="flex items-center justify-between gap-2 mt-2 w-full">
-                {/* Barcode Section */}
-                <div className="flex flex-col items-center mb-3 ml-0.5">
-                  <svg
-                    ref={barcodeRef}
-                    className="w-[180px] h-[15px] object-cover"
-                  />
-                  {/* <div className="text-[7px] text-black mt-1">
+            </div>
+
+            {/* Barcode Section */}
+            <div className="flex flex-col items-center">
+              <svg
+                ref={barcodeRef}
+                className="w-[180px] h-[15px] object-cover"
+              />
+              {/* <div className="text-[7px] text-black mt-1">
                     {student?.["Form Number"] || ""}
                   </div> */}
-                </div>
-                {/* Auth Signatory */}
-                <div className="text-[7px] text-black self-end min-w-max">
-                  Auth. Signatory
-                </div>
-              </div>
+            </div>
+            {/* Auth Signatory */}
+            <div className="text-[7px] text-black self-end min-w-max">
+              Auth. Signatory
             </div>
           </div>
         </div>
@@ -169,7 +183,9 @@ const NewIdCard = ({ student, showinRow }) => {
         {/* Main Content */}
         <div className="pt-1 pl-2 pr-1 text-[8px] text-black flex-1 flex flex-col gap-[2.5px]">
           <div className="flex items-start">
-            <span className="min-w-[70px] max-w-[70px] text-start">Permanent Address </span>
+            <span className="min-w-[70px] max-w-[70px] text-start">
+              Permanent Address{" "}
+            </span>
             <span>:</span>
             <span className="mx-2 text-left">
               {student?.permanent_address
@@ -180,25 +196,33 @@ const NewIdCard = ({ student, showinRow }) => {
             </span>
           </div>
           <div className="flex items-start">
-            <span className="min-w-[70px] max-w-[70px] text-start">Correspondence Address</span>
+            <span className="min-w-[70px] max-w-[70px] text-start">
+              Correspondence Address
+            </span>
             <span>:</span>
             <span className="mx-2 text-left">AS ABOVE</span>
           </div>
           <div className="flex items-center justify-between w-full">
             <div className="flex items-start">
-              <span className="min-w-[30px] max-w-[30px] text-start">Mobile</span>
+              <span className="min-w-[30px] max-w-[30px] text-start">
+                Mobile
+              </span>
               <span>:</span>
               <span className="mx-1">{student?.mobile || "--"}</span>
             </div>
             <div className="flex items-start">
-              <span className="min-w-[30px] max-w-[30px] text-start">E-Mail</span>
+              <span className="min-w-[30px] max-w-[30px] text-start">
+                E-Mail
+              </span>
               <span>:</span>
               <span className="mx-1 italic">{student?.email || "--"}</span>
             </div>
           </div>
           <div className="flex items-start justify-between w-full">
             <div className="flex items-center">
-              <span className="min-w-[45px] max-w-[45px] text-start">Adm. Date</span>
+              <span className="min-w-[45px] max-w-[45px] text-start">
+                Adm. Date
+              </span>
               <span>:</span>
               <span className="mx-1">
                 {student?.admission_date || "26-06-2024"}
