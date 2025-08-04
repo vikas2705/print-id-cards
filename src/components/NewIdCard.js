@@ -92,7 +92,7 @@ const NewIdCard = ({ student, showinRow }) => {
             </div>
           </div>
 
-          <div className="mt-0.5 mr-0.5">
+          <div className="ml-1">
               <img src={APlusCertified} alt="" height={24} width={24} />
             </div>
         </div>
