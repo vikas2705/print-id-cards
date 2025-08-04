@@ -34,6 +34,7 @@ async function getFileFromIndexedDB(key) {
 const IdCardList = () => {
   const [students, setStudents] = useState([]);
   const [excelData, setExcelData] = useState([]);
+  const [excelHeaders, setExcelHeaders] = useState({}); // Map field names to column numbers
   const [selectedStudent, setSelectedStudent] = useState();
   const [selectedStudentsForPrint, setSelectedStudentsForPrint] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -117,41 +118,48 @@ const IdCardList = () => {
   };
 
   // Function to validate and analyze card generation
-  const analyzeCardGeneration = (studentData) => {
+  const analyzeCardGeneration = (studentData, headers = {}) => {
     const failed = [];
     const successful = [];
+    
+    // Helper function to get column info for an issue
+    const getColumnInfo = (fieldName) => {
+      const columnNum = headers[fieldName];
+      return columnNum ? ` (Column ${columnNum})` : '';
+    };
     
     studentData.forEach((student, index) => {
       const issues = [];
       
       // Check required fields
       if (!student.Name || student.Name.trim() === "") {
-        issues.push("Missing student name");
+        issues.push(`Missing student name${getColumnInfo('Name')}`);
       }
       
       if (!student["Form Number"] && !student.formNumber) {
-        issues.push("Missing form/registration number");
+        const formNumberCol = getColumnInfo('Form Number') || getColumnInfo('formNumber');
+        issues.push(`Missing form/registration number${formNumberCol}`);
       }
       
       if (!student.photo) {
-        issues.push("Missing photo");
+        issues.push("Missing photo (from ZIP file)");
       }
       
       if (!student.sign) {
-        issues.push("Missing signature");
+        issues.push("Missing signature (from ZIP file)");
       }
       
       // Check optional but important fields
       if (!student.father_name || student.father_name.trim() === "") {
-        issues.push("Missing father's name");
+        issues.push(`Missing father's name${getColumnInfo('father_name')}`);
       }
       
       if (!student.dob || student.dob.trim() === "") {
-        issues.push("Missing date of birth");
+        issues.push(`Missing date of birth${getColumnInfo('dob')}`);
       }
       
       if (!student.programName || student.programName.trim() === "") {
-        issues.push("Missing program name");
+        issues.push(`Missing program name${getColumnInfo('programName')}`);
       }
       
       if (issues.length > 0) {
@@ -159,6 +167,7 @@ const IdCardList = () => {
           id: student["Form Number"] || student.formNumber || `row-${index + 1}`,
           name: student.Name || "Unknown",
           formNumber: student["Form Number"] || student.formNumber || "N/A",
+          rowNumber: index + 2, // Excel row number (accounting for header row)
           issues: issues,
           studentData: student
         });
@@ -178,8 +187,23 @@ const IdCardList = () => {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: "array" });
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      
+      // Get the range of the sheet
+      const range = XLSX.utils.decode_range(sheet['!ref']);
+      
+      // Create header mapping to column numbers
+      const headerMap = {};
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col }); // First row
+        const cell = sheet[cellAddress];
+        if (cell && cell.v) {
+          headerMap[cell.v] = col + 1; // Column numbers are 1-based for user display
+        }
+      }
+      
       const json = XLSX.utils.sheet_to_json(sheet);
       setExcelData(json);
+      setExcelHeaders(headerMap);
       setXlsxFileName(file.name);
     };
     reader.readAsArrayBuffer(file);
@@ -310,7 +334,7 @@ const IdCardList = () => {
       setProcessingStatus("Analyzing card generation...");
       
       // Analyze the combined data
-      const analysis = analyzeCardGeneration(combined);
+      const analysis = analyzeCardGeneration(combined, excelHeaders);
       
       setStudents(combined);
       setFailedCards(analysis.failed);
@@ -351,6 +375,7 @@ const IdCardList = () => {
   const clearData = () => {
     setStudents([]);
     setExcelData([]);
+    setExcelHeaders({});
     setXlsxFileName("");
     setZipFileName("");
     setError(null);
@@ -708,7 +733,7 @@ const IdCardList = () => {
                       </div>
                     </div>
                     <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                      Row {index + 1}
+                      Excel Row {failedCard.rowNumber}
                     </div>
                   </div>
                 </div>
