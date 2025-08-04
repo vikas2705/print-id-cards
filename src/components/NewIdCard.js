@@ -104,7 +104,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 {student?.["Form Number"] || ""}
               </div>
             </div>
-            <div className="text-center mt-1 place-self-center mr-6">
+            <div className="text-center mt-1 place-self-center mr-10">
               <div className="text-[9px] font-semibold text-red-800 leading-3">
                 STUDENT ID CARD
               </div>
@@ -167,7 +167,7 @@ const NewIdCard = ({ student, showinRow }) => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between mt-1">
+          <div className="flex items-end justify-between mt-1">
             {/* Student Signature */}
             <div className="flex flex-col items-center">
               <img
