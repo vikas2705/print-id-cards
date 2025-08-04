@@ -286,10 +286,20 @@ const IdCardList = () => {
           (row) => row["FORM NUMBER"] === formNumber
         );
         
+        
         // Extract required fields from the Excel row
-        const permanent_address = xlsxMatch?.["PERMANENT ADDRESS LINE 1"] || "";
-        const correspondence_address =
-          xlsxMatch?.["PERMANENT ADDRESS LINE 2"] || "";
+        const permanent_address_line1 = xlsxMatch?.["PERMANENT ADDRESS LINE 1"] || "";
+        const permanent_address_line2 = xlsxMatch?.["PERMANENT ADDRESS LINE 2"] || "";
+        const permanent_address_city = xlsxMatch?.["PERMANENT CITY"] || "";
+        const permanent_address_state = xlsxMatch?.["PERMANENT STATE"] || "";
+        const permanent_address_pincode = xlsxMatch?.["PERMANENT PINCODE"] || "";
+        const correspondence_address_line1 =
+          xlsxMatch?.["ADD LINE 1"] || "";
+        const correspondence_address_line2 =
+          xlsxMatch?.["ADD LINE 2"] || "";
+        const correspondence_address_city = xlsxMatch?.["CITY"] || "";
+        const correspondence_address_state = xlsxMatch?.["STATE"] || "";
+        const correspondence_address_pincode = xlsxMatch?.["PINCODE"] || "";
         const mobile = xlsxMatch?.["MOBILE"] || "";
         const email = xlsxMatch?.["EMAIL"] || "";
         const admission_date = xlsxMatch?.["ADMISSION GRANTED DATE"] || "";
@@ -312,7 +322,10 @@ const IdCardList = () => {
         
         const progress = 70 + ((index + 1) / csvData.length) * 20;
         setProcessingProgress(Math.min(progress, 90));
-        
+
+        const permanent_address = `${permanent_address_line1} ${permanent_address_city} ${permanent_address_state} ${permanent_address_pincode}`;
+        const correspondence_address = `${correspondence_address_line1} ${correspondence_address_city} ${correspondence_address_state} ${correspondence_address_pincode}`;
+        console.log({permanent_address})
         return {
           formNumber,
           ...xlsxMatch,

@@ -57,6 +57,8 @@ const NewIdCard = ({ student, showinRow }) => {
     }
   }, [student]);
 
+  console.log(student);
+
   return (
     <div
       className={`flex gap-2 ${showinRow ? "flex-row" : "flex-col"}`}
@@ -208,25 +210,23 @@ const NewIdCard = ({ student, showinRow }) => {
             <span className="min-w-[70px] max-w-[70px] text-start">Per. Address </span>
             <span>:</span>
             <span className="mx-2 text-left line-clamp-2 overflow-hidden leading-tight">
-              {student?.permanent_address
-                ? `${student?.permanent_address}`
-                : ""}
-              {student?.permanent_state || ""}
-              {student?.permanent_pincode || ""}
+              {student?.permanent_address || ""}
             </span>
           </div>
-          <div className="flex items-start">
+           <div className="flex items-start">
             <span className="min-w-[70px] max-w-[70px] text-start">Corr. Address</span>
             <span>:</span>
-            <span className="mx-2 text-left">AS ABOVE</span>
-          </div>
-          <div className="flex items-center justify-between w-full">
+            <span className="mx-2 text-left line-clamp-2 overflow-hidden leading-tight">
+              {student?.correspondence_address || ""}
+            </span>
+          </div> 
+          <div className="flex items-center justify-between w-full mt-1">
             <div className="flex items-start">
               <span className="min-w-[30px] max-w-[30px] text-start">
                 Mobile
               </span>
-              <span>:</span>
-              <span className="mx-1">{student?.mobile || "--"}</span>
+              <span className="ml-[40px]">:</span>
+              <span className="mr-1 ml-[8px]">{student?.mobile || "--"}</span>
             </div>
             <div className="flex items-start">
               <span className="min-w-[30px] max-w-[30px] text-start">
@@ -241,13 +241,13 @@ const NewIdCard = ({ student, showinRow }) => {
               <span className="min-w-[45px] max-w-[45px] text-start">
                 Adm. Date
               </span>
-              <span>:</span>
-              <span className="mx-1">
+              <span className="ml-[25px]">:</span>
+              <span className="mr-1 ml-[8px]">
                 {student?.admission_date ? student.admission_date.split(' ')[0] : "26-06-2024"}
               </span>
             </div>
             {/* Validity Period */}
-            <div className="bg-[#b0afae] pl-0.5 pr-2.5 py-1 rounded border-[0.5px] border-black text-[7px] font-bold text-black h-fit flex items-center gap-0.5">
+            <div className="bg-[#b0afae] py-[4px] px-[8px] rounded border-[0.5px] border-black text-[7px] font-bold text-black h-fit flex items-center gap-0.5">
               <div className="text-[7px]">Valid Upto:</div>
               <div className="text-[7px] tracking-tighter">{validUpto}</div>
             </div>
