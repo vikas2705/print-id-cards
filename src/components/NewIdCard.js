@@ -63,7 +63,7 @@ const NewIdCard = ({ student, showinRow }) => {
       style={{ transform: showinRow ? "scale(1.4)" : "" }}
     >
       {/* Front Side of ID Card */}
-      <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col px-1 rounded-xl">
+      <div className="w-[350px] h-[204px] border-black bg-white flex flex-col px-1 ">
         <div className="flex items-center px-2 py-[2px] border-b-2 border-b-blue-800 h-1/3">
           <div className="flex items-center h-full">
             <img
@@ -91,10 +91,6 @@ const NewIdCard = ({ student, showinRow }) => {
               MINISTRY OF EDUCATION, GOVT. OF INDIA
             </div>
           </div>
-
-          <div className="ml-1">
-              <img src={APlusCertified} alt="" height={24} width={24} />
-            </div>
         </div>
 
         {/* main content */}
@@ -108,7 +104,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 {student?.["Form Number"] || ""}
               </div>
             </div>
-            <div className="text-center mt-1 place-self-center mr-28">
+            <div className="text-center mt-1 place-self-center mr-6">
               <div className="text-[9px] font-semibold text-red-800 leading-3">
                 STUDENT ID CARD
               </div>
@@ -117,7 +113,9 @@ const NewIdCard = ({ student, showinRow }) => {
                 Session ({session})
               </div>
             </div>
-        
+            <div className="mt-0.5 mr-0.5">
+              <img src={APlusCertified} alt="" height={24} width={24} />
+            </div>
           </div>
           <div className="flex gap-2">
             <div className="flex flex-col gap-1">
@@ -203,7 +201,7 @@ const NewIdCard = ({ student, showinRow }) => {
       </div>
 
       {/* Back Side of ID Card */}
-      <div className="w-[350px] h-[204px] border border-black bg-white flex flex-col relative rounded-xl overflow-clip">
+      <div className="w-[350px] h-[204px] border-black bg-white flex flex-col relative  overflow-clip">
         {/* Main Content */}
         <div className="pt-1 pl-2 pr-1 text-[8px] text-black flex-1 flex flex-col gap-[2.5px]">
           <div className="flex items-start">
