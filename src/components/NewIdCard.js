@@ -91,6 +91,10 @@ const NewIdCard = ({ student, showinRow }) => {
               MINISTRY OF EDUCATION, GOVT. OF INDIA
             </div>
           </div>
+
+          <div className="mt-0.5 mr-0.5">
+              <img src={APlusCertified} alt="" height={24} width={24} />
+            </div>
         </div>
 
         {/* main content */}
@@ -104,7 +108,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 {student?.["Form Number"] || ""}
               </div>
             </div>
-            <div className="text-center mt-1 place-self-center mr-16">
+            <div className="text-center mt-1 place-self-center mr-28">
               <div className="text-[9px] font-semibold text-red-800 leading-3">
                 STUDENT ID CARD
               </div>
@@ -113,9 +117,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 Session ({session})
               </div>
             </div>
-            <div className="mt-0.5 mr-0.5">
-              <img src={APlusCertified} alt="" height={24} width={24} />
-            </div>
+        
           </div>
           <div className="flex gap-2">
             <div className="flex flex-col gap-1">
