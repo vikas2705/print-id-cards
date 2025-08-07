@@ -437,7 +437,7 @@ const IdCardList = () => {
     },
     pageStyle: `@media print {
       @page {
-        size: 6.9cm 4.1cm;
+        size: 350px 204px;
         margin: 0.25cm 0.25cm;
       }
     }`,

@@ -65,7 +65,7 @@ const NewIdCard = ({ student, showinRow }) => {
       style={{ transform: showinRow ? "scale(1.4)" : "" }}
     >
       {/* Front Side of ID Card */}
-      <div className="w-[350px] h-[204px] border-black bg-white flex flex-col px-1 ">
+      <div className="w-[350px] h-[204px] border-black bg-white flex flex-col px-1 mt-2">
         <div className="flex items-center px-2 py-[2px] border-b-2 border-b-blue-800 h-1/3">
           <div className="flex items-center h-full">
             <img
@@ -85,11 +85,11 @@ const NewIdCard = ({ student, showinRow }) => {
             <div className="text-[12px] text-blue-800 leading-3 font-bold mr-4">
               NATIONAL SANSKRIT UNIVERSITY
             </div>
-            <div className="text-[8px] text-red-600 leading-tight mr-2">
+            <div className="text-[11px] text-red-600 leading-tight mr-2">
               (A Central University)
             </div>
             <div className="h-[1px] bg-blue-800 w-[215px] self-center"></div>
-            <div className="text-[10px] text-red-700 leading-tight text-center">
+            <div className="text-[11px] text-red-700 leading-tight text-center">
               MINISTRY OF EDUCATION, GOVT. OF INDIA
             </div>
           </div>
@@ -99,10 +99,10 @@ const NewIdCard = ({ student, showinRow }) => {
         <div className="pl-1 h-2/3 pb-[2px]">
           <div className="flex items-start justify-between mb-1 w-full">
             <div className="flex items-center text-black font-semibold leading-3 mt-1 gap-0.5">
-              <div className="text-red-600 font-semibold text-[10px]">
+              <div className="text-red-600 font-semibold text-[11px]">
                 Reg.No.
               </div>
-              <div className="text-[8px] tracking-tighter">
+              <div className="text-[11px] tracking-tighter">
                 {student?.["Form Number"] || ""}
               </div>
             </div>
@@ -111,7 +111,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 STUDENT ID CARD
               </div>
               <div className="h-[0.5px] bg-red-800 w-[80px] self-center"></div>
-              <div className="text-[8px] font-semibold text-red-800 italic leading-3">
+              <div className="text-[11px] font-semibold text-red-800 italic leading-3">
                 Session ({session})
               </div>
             </div>
@@ -132,9 +132,9 @@ const NewIdCard = ({ student, showinRow }) => {
                 />
               </div>
             </div>
-            <div className="flex flex-col items-start justify-between text-[8px] text-black] my-1">
+            <div className="flex flex-col items-start justify-between text-[11px] text-black]">
               <div className="flex items-start">
-                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                <span className="min-w-[50px] max-w-[50px] text-start font-bold">
                   NAME{" "}
                 </span>
                 <span>:</span>
@@ -143,7 +143,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 </span>
               </div>
               <div className="flex items-start">
-                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                <span className="min-w-[50px] max-w-[50px] text-start font-bold">
                   F-NAME
                 </span>
                 <span>:</span>
@@ -152,7 +152,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 </span>
               </div>
               <div className="flex items-start">
-                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                <span className="min-w-[50px] max-w-[50px] text-start font-bold">
                   CLASS
                 </span>
                 <span>:</span>
@@ -161,7 +161,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 </span>
               </div>
               <div className="flex items-start">
-                <span className="min-w-[40px] max-w-[40px] text-start font-bold">
+                <span className="min-w-[50px] max-w-[50px] text-start font-bold">
                   DOB
                 </span>
                 <span>:</span>
@@ -171,7 +171,7 @@ const NewIdCard = ({ student, showinRow }) => {
           </div>
           <div className="flex items-end justify-between mt-1">
             {/* Student Signature */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-start">
               <img
                 src={
                   student?.sign || getDummySignature(student?.["Form Number"])
@@ -179,7 +179,7 @@ const NewIdCard = ({ student, showinRow }) => {
                 alt={`${student?.Name || "Student"} signature`}
                 className="w-[65px] h-[20px] object-cover"
               />
-              <div className="text-[7px] text-black text-center">
+              <div className="text-[9px] text-black text-center">
                 (Student Signature)
               </div>
             </div>
@@ -188,35 +188,44 @@ const NewIdCard = ({ student, showinRow }) => {
             <div className="flex flex-col items-center">
               <svg
                 ref={barcodeRef}
-                className="w-[180px] h-[15px] object-cover"
+                className="w-[150px] h-[15px] object-cover"
               />
-              {/* <div className="text-[7px] text-black mt-1">
+              {/* <div className="text-[9px] text-black mt-1">
                     {student?.["Form Number"] || ""}
                   </div> */}
             </div>
             {/* Auth Signatory */}
-            <div className="text-[7px] text-black self-end min-w-max">
-              Auth. Signatory
+            <div className="flex flex-col items-start">
+            <img
+                src={
+               "/sign-1.png"
+                }
+                alt={`${student?.Name || "Student"} signature`}
+                className="w-[65px] h-[20px] object-cover"
+              />
+              <div className="text-[9px] text-black self-end min-w-max">
+                Auth. Signatory
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Back Side of ID Card */}
-      <div className="w-[350px] h-[204px] border-black bg-white flex flex-col relative  overflow-clip">
+      <div className="w-[350px] h-[204px] border-black bg-white flex flex-col relative  overflow-clip mt-1 ml-1">
         {/* Main Content */}
-        <div className="pt-1 pl-2 pr-1 text-[8px] text-black flex-1 flex flex-col gap-[2.5px]">
-          <div className="flex items-start">
-            <span className="min-w-[70px] max-w-[70px] text-start">Per. Address </span>
+        <div className="pt-1 pl-2 pr-1 text-[11px] text-black flex-1 flex flex-col gap-[2.5px]">
+          {/* <div className="flex items-start">
+            <span className="min-w-[45px] max-w-[45px] text-start">Per. Address </span>
             <span>:</span>
             <span className="mx-2 text-left line-clamp-2 overflow-hidden leading-tight">
               {student?.permanent_address || ""}
             </span>
-          </div>
+          </div> */}
            <div className="flex items-start">
-            <span className="min-w-[70px] max-w-[70px] text-start">Corr. Address</span>
+            <span className="min-w-[38px] max-w-[38px] text-start">Corr. Address</span>
             <span>:</span>
-            <span className="mx-2 text-left line-clamp-2 overflow-hidden leading-tight">
+            <span className="mx-1 text-left line-clamp-2 overflow-hidden leading-tight">
               {student?.correspondence_address || ""}
             </span>
           </div> 
@@ -225,35 +234,35 @@ const NewIdCard = ({ student, showinRow }) => {
               <span className="min-w-[30px] max-w-[30px] text-start">
                 Mobile
               </span>
-              <span className="ml-[40px]">:</span>
-              <span className="mr-1 ml-[8px]">{student?.mobile || "--"}</span>
+              <span className="ml-[8px]">:</span>
+              <span className="mr-1 ml-[4px]">{student?.mobile || "--"}</span>
             </div>
             <div className="flex items-start">
               <span className="min-w-[30px] max-w-[30px] text-start">
-                E-Mail
+                eMail
               </span>
               <span>:</span>
-              <span className="mx-1 italic">{student?.email || "--"}</span>
+              <span className="mr-1 italic">{student?.email || "--"}</span>
             </div>
           </div>
           <div className="flex items-start justify-between w-full">
             <div className="flex items-center">
-              <span className="min-w-[45px] max-w-[45px] text-start">
+              <span className="min-w-[55px] max-w-[55px] text-start">
                 Adm. Date
               </span>
-              <span className="ml-[25px]">:</span>
+              <span className="ml-[0px]">:</span>
               <span className="mr-1 ml-[8px]">
                 {student?.admission_date ? student.admission_date.split(' ')[0] : "26-06-2024"}
               </span>
             </div>
             {/* Validity Period */}
-            <div className="bg-[#b0afae] py-[4px] px-[8px] rounded border-[0.5px] border-black text-[7px] font-bold text-black h-fit flex items-center gap-0.5">
-              <div className="text-[7px]">Valid Upto:</div>
-              <div className="text-[7px] tracking-tighter">{validUpto}</div>
+            <div className="bg-[#b0afae] py-[4px] px-[8px] rounded border-[0.5px] border-black text-[9px] font-bold text-black h-fit flex items-center gap-0.5">
+              <div className="text-[8px]">Valid Upto:</div>
+              <div className="text-[9px] tracking-tighter">{validUpto}</div>
             </div>
           </div>
           {/* Notes Section */}
-          <div className="text-[8px] text-black flex items-start gap-1">
+          <div className="text-[10px] text-black flex items-start gap-1 leading-[10px]">
             <div className="">Note:</div>
             <div className="flex flex-col items-start italic">
               <div>To reissue the card, you must provide a copy of the police FIR and pay a reissuance fee of ₹100.</div>
@@ -261,18 +270,18 @@ const NewIdCard = ({ student, showinRow }) => {
           </div>
           <div className="flex items-end w-full gap-1">
             <div className="flex-1 h-[0.6px] bg-black mb-1" />
-            <div className="font-bold w-fit text-[10px]">For Hostel Use (if applicable)</div>
+            <div className="font-bold w-fit text-[11px]">For Hostel Use (if applicable)</div>
             <div className="flex-1 h-[0.6px] bg-black mb-1" />
           </div>
 
           <div className="flex items-end justify-between gap-2">
             <div className="flex items-end gap-1">
               <span className="">No.</span>
-              <div className="w-[90px] h-[20px] border-[0.5px] border-black rounded-[1px]"></div>
+              <div className="w-[75px] h-[20px] border-[0.5px] border-black rounded-[1px]"></div>
             </div>
             <div className="flex items-end gap-1">
               <span className="">Room No.</span>
-              <div className="w-[90px] h-[20px] border-[0.5px] border-black rounded-[1px]"></div>
+              <div className="w-[75px] h-[20px] border-[0.5px] border-black rounded-[1px]"></div>
             </div>
             <div>(Hostel Warden)</div>
           </div>
@@ -280,7 +289,7 @@ const NewIdCard = ({ student, showinRow }) => {
 
         {/* Institutional Contact Information */}
         <div className="bg-[#6addee] text-center py-1 absolute bottom-0 left-0 w-full border-t border-black">
-          <div className="text-[7px] font-medium">
+          <div className="text-[9px] font-medium">
             <div>B-4, Qutub Institutional Area, New Delhi-110016</div>
             <div>Ph.: 011-46060606 (30 Lines) | Academic: 46060548, 46060503</div>
             <div>Email: academic@slbsrsv.ac.in</div>
